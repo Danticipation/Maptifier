@@ -1,0 +1,73 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement class="maptifier-root">
+        <!-- Top Bar -->
+        <ui:VisualElement class="maptifier-topbar">
+            <ui:Label text="Maptifier" class="maptifier-label" style="font-size: 18px; -unity-font-style: bold;" />
+            <ui:VisualElement style="flex-grow: 1;" />
+            <ui:VisualElement class="maptifier-status-dot maptifier-status-dot--disconnected" name="display-status" />
+            <ui:Label text="No Display" name="display-label" class="maptifier-label--secondary" style="margin-left: 8px;" />
+            <ui:Button name="settings-btn" class="maptifier-toolbar__button" style="width: 40px; height: 40px; margin-left: 12px;">
+                <ui:Label text="⚙" style="font-size: 20px;" />
+            </ui:Button>
+        </ui:VisualElement>
+        
+        <!-- Canvas Area -->
+        <ui:VisualElement class="maptifier-canvas-area" name="canvas-area">
+            <ui:IMGUIContainer name="canvas-preview" style="flex-grow: 1;" />
+        </ui:VisualElement>
+        
+        <!-- Crossfade Slider -->
+        <ui:VisualElement name="mixer-bar" style="height: 40px; padding: 4px 16px; background-color: var(--maptifier-bg-secondary); flex-direction: row; align-items: center;">
+            <ui:Label text="A" class="maptifier-label--secondary" style="margin-right: 8px;" />
+            <ui:Slider name="crossfade-slider" low-value="0" high-value="1" value="0.5" class="maptifier-slider" style="flex-grow: 1;" />
+            <ui:Label text="B" class="maptifier-label--secondary" style="margin-left: 8px;" />
+        </ui:VisualElement>
+        
+        <!-- Bottom Toolbar -->
+        <ui:VisualElement class="maptifier-toolbar" name="toolbar">
+            <ui:Button name="tool-select" class="maptifier-toolbar__button maptifier-toolbar__button--active">
+                <ui:Label text="✦" class="maptifier-toolbar__icon" />
+            </ui:Button>
+            <ui:Button name="tool-warp" class="maptifier-toolbar__button">
+                <ui:Label text="◇" class="maptifier-toolbar__icon" />
+            </ui:Button>
+            <ui:Button name="tool-mask" class="maptifier-toolbar__button">
+                <ui:Label text="◐" class="maptifier-toolbar__icon" />
+            </ui:Button>
+            <ui:Button name="tool-draw" class="maptifier-toolbar__button">
+                <ui:Label text="✎" class="maptifier-toolbar__icon" />
+            </ui:Button>
+            <ui:Button name="tool-text" class="maptifier-toolbar__button">
+                <ui:Label text="T" class="maptifier-toolbar__icon" style="font-size: 24px; -unity-font-style: bold;" />
+            </ui:Button>
+            <ui:Button name="tool-effects" class="maptifier-toolbar__button">
+                <ui:Label text="✧" class="maptifier-toolbar__icon" />
+            </ui:Button>
+        </ui:VisualElement>
+        
+        <!-- Layer Drawer (right side) -->
+        <ui:VisualElement class="maptifier-drawer" name="layer-drawer">
+            <ui:Label text="Layers" class="maptifier-label" style="padding: 16px; font-size: 16px; -unity-font-style: bold; border-bottom-width: 1px; border-bottom-color: var(--maptifier-border);" />
+            <ui:VisualElement name="layer-a-card" style="padding: 12px; margin: 8px; background-color: var(--maptifier-bg-tertiary); border-radius: 8px;">
+                <ui:Label text="Layer A" class="maptifier-label" />
+                <ui:Slider name="opacity-a" low-value="0" high-value="1" value="1" class="maptifier-slider" />
+                <ui:VisualElement style="flex-direction: row; margin-top: 8px;">
+                    <ui:Button text="S" name="solo-a" class="maptifier-toolbar__button" style="width: 36px; height: 36px; font-size: 12px;" />
+                    <ui:Button text="M" name="mute-a" class="maptifier-toolbar__button" style="width: 36px; height: 36px; font-size: 12px; margin-left: 8px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="layer-b-card" style="padding: 12px; margin: 8px; background-color: var(--maptifier-bg-tertiary); border-radius: 8px;">
+                <ui:Label text="Layer B" class="maptifier-label" />
+                <ui:Slider name="opacity-b" low-value="0" high-value="1" value="1" class="maptifier-slider" />
+                <ui:VisualElement style="flex-direction: row; margin-top: 8px;">
+                    <ui:Button text="S" name="solo-b" class="maptifier-toolbar__button" style="width: 36px; height: 36px; font-size: 12px;" />
+                    <ui:Button text="M" name="mute-b" class="maptifier-toolbar__button" style="width: 36px; height: 36px; font-size: 12px; margin-left: 8px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:DropdownField name="blend-mode" label="Blend" choices="Normal,Additive,Multiply,Screen,Overlay,Difference" value="Normal" style="margin: 12px;" />
+        </ui:VisualElement>
+        
+        <!-- Toast -->
+        <ui:Label name="toast" class="maptifier-toast" text="" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,60 @@
+name: Build Debug APK
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop, main]
+
+env:
+  UNITY_VERSION: "6000.3"
+
+jobs:
+  build-android:
+    name: Build Android Debug
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Unity Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-Android-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-Android-
+
+      - name: Build Android APK
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: Android
+          buildName: Maptifier
+          androidAppBundle: false
+          androidKeystoreName: ""
+          versioning: Semantic
+          buildMethod: ""
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Maptifier-Debug-${{ github.sha }}
+          path: build/Android/*.apk
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Post build size
+        if: success()
+        run: |
+          APK_SIZE=$(du -sh build/Android/*.apk | cut -f1)
+          echo "### Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **APK Size**: ${APK_SIZE}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY

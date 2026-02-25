@@ -1,0 +1,17 @@
+{
+    "name": "Maptifier.Warping",
+    "rootNamespace": "Maptifier.Warping",
+    "references": [
+        "Maptifier.Core",
+        "Maptifier.Input"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,17 @@
+{
+    "name": "Maptifier.Masking",
+    "rootNamespace": "Maptifier.Masking",
+    "references": [
+        "Maptifier.Core",
+        "Maptifier.Input"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,40 @@
+# Unity core
+-keep class com.unity3d.** { *; }
+-keep class bitter.jnibridge.** { *; }
+-keep class com.google.android.** { *; }
+
+# Firebase
+-keep class com.google.firebase.** { *; }
+-keep class com.google.android.gms.** { *; }
+
+# Maptifier native plugins
+-keep class com.maptifier.** { *; }
+
+# Keep Android Display/Presentation classes used via reflection
+-keep class android.app.Presentation { *; }
+-keep class android.hardware.display.DisplayManager { *; }
+-keep class android.hardware.display.DisplayManager$DisplayListener { *; }
+-keep class android.media.MediaCodec { *; }
+-keep class android.media.MediaMuxer { *; }
+-keep class android.media.MediaRouter { *; }
+
+# JSON serialization (Unity JsonUtility uses reflection)
+-keepclassmembers class * {
+    @UnityEngine.SerializeField <fields>;
+}
+-keepclassmembers class Maptifier.Projects.** { *; }
+-keepclassmembers class Maptifier.Core.** { *; }
+
+# Preserve annotations
+-keepattributes *Annotation*
+-keepattributes Signature
+-keepattributes EnclosingMethod
+-keepattributes InnerClasses
+
+# Prevent stripping of vibration API
+-keep class android.os.VibrationEffect { *; }
+-keep class android.os.Vibrator { *; }
+
+# Don't warn about missing optional dependencies
+-dontwarn com.google.firebase.**
+-dontwarn com.google.android.gms.**

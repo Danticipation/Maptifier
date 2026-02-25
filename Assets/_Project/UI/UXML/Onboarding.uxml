@@ -1,0 +1,74 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement class="maptifier-root" name="onboarding-root">
+        <!-- Step indicators (5 dots) -->
+        <ui:VisualElement name="step-indicators" style="flex-direction: row; justify-content: center; padding: 24px; position: absolute; top: 0; left: 0; right: 0; z-index: 10;">
+            <ui:VisualElement class="maptifier-step-dot maptifier-step-dot--active" name="dot-0" />
+            <ui:VisualElement class="maptifier-step-dot" name="dot-1" />
+            <ui:VisualElement class="maptifier-step-dot" name="dot-2" />
+            <ui:VisualElement class="maptifier-step-dot" name="dot-3" />
+            <ui:VisualElement class="maptifier-step-dot" name="dot-4" />
+        </ui:VisualElement>
+        
+        <!-- Skip button -->
+        <ui:Button text="Skip" name="skip-btn" style="position: absolute; top: 24px; right: 24px; z-index: 10; background-color: transparent; color: var(--maptifier-text-secondary); border-width: 0; font-size: 14px;" />
+        
+        <!-- Pages container -->
+        <ui:VisualElement name="pages-container" style="flex-grow: 1; flex-direction: row; overflow: hidden;">
+            <!-- Page 1: Welcome -->
+            <ui:VisualElement class="maptifier-onboard-page" name="page-0">
+                <ui:VisualElement style="flex-grow: 1; justify-content: center; align-items: center;">
+                    <ui:Label text="M" style="font-size: 96px; color: var(--maptifier-accent-cyan); -unity-font-style: bold;" />
+                    <ui:Label text="Maptifier" style="font-size: 36px; color: var(--maptifier-text-primary); -unity-font-style: bold; margin-top: 16px;" />
+                    <ui:Label text="Pocket Projection Mapping" style="font-size: 16px; color: var(--maptifier-text-secondary); margin-top: 8px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            
+            <!-- Page 2: Connect Projector -->
+            <ui:VisualElement class="maptifier-onboard-page" name="page-1">
+                <ui:VisualElement style="flex-grow: 1; justify-content: center; align-items: center; padding: 32px;">
+                    <ui:Label text="📽" style="font-size: 72px;" />
+                    <ui:Label text="Connect Your Projector" style="font-size: 24px; color: var(--maptifier-text-primary); -unity-font-style: bold; margin-top: 24px;" />
+                    <ui:Label text="Plug in a USB-C HDMI adapter, or cast wirelessly. Your phone stays as the control surface — the projector shows only your visuals." style="font-size: 14px; color: var(--maptifier-text-secondary); margin-top: 16px; white-space: normal; -unity-text-align: middle-center;" />
+                    <ui:VisualElement name="connection-status-onboard" style="margin-top: 24px; flex-direction: row; align-items: center;">
+                        <ui:VisualElement class="maptifier-status-dot maptifier-status-dot--disconnected" name="onboard-status-dot" />
+                        <ui:Label text="No display detected" name="onboard-status-label" class="maptifier-label--secondary" style="margin-left: 8px;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            
+            <!-- Page 3: Import or Draw -->
+            <ui:VisualElement class="maptifier-onboard-page" name="page-2">
+                <ui:VisualElement style="flex-grow: 1; justify-content: center; align-items: center; padding: 32px;">
+                    <ui:Label text="🎨" style="font-size: 72px;" />
+                    <ui:Label text="Import or Draw" style="font-size: 24px; color: var(--maptifier-text-primary); -unity-font-style: bold; margin-top: 24px;" />
+                    <ui:Label text="Import photos and videos from your gallery, or draw directly on the canvas with fluid pressure-sensitive strokes." style="font-size: 14px; color: var(--maptifier-text-secondary); margin-top: 16px; white-space: normal; -unity-text-align: middle-center;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            
+            <!-- Page 4: Warp to Fit -->
+            <ui:VisualElement class="maptifier-onboard-page" name="page-3">
+                <ui:VisualElement style="flex-grow: 1; justify-content: center; align-items: center; padding: 32px;">
+                    <ui:Label text="◇" style="font-size: 72px; color: var(--maptifier-accent-cyan);" />
+                    <ui:Label text="Warp to Fit" style="font-size: 24px; color: var(--maptifier-text-primary); -unity-font-style: bold; margin-top: 24px;" />
+                    <ui:Label text="Drag the corners to perfectly map your content onto any surface. Use mesh mode for curved surfaces." style="font-size: 14px; color: var(--maptifier-text-secondary); margin-top: 16px; white-space: normal; -unity-text-align: middle-center;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            
+            <!-- Page 5: Ready -->
+            <ui:VisualElement class="maptifier-onboard-page" name="page-4">
+                <ui:VisualElement style="flex-grow: 1; justify-content: center; align-items: center; padding: 32px;">
+                    <ui:Label text="✨" style="font-size: 72px;" />
+                    <ui:Label text="You're Ready!" style="font-size: 24px; color: var(--maptifier-text-primary); -unity-font-style: bold; margin-top: 24px;" />
+                    <ui:Label text="Mix layers, add effects, and create stunning projections — all from your phone." style="font-size: 14px; color: var(--maptifier-text-secondary); margin-top: 16px; white-space: normal; -unity-text-align: middle-center;" />
+                    <ui:Button text="Create First Project" name="create-project-btn" class="maptifier-button" style="margin-top: 32px; width: 240px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        
+        <!-- Navigation -->
+        <ui:VisualElement style="flex-direction: row; justify-content: space-between; padding: 24px;">
+            <ui:Button text="Back" name="back-btn" style="background-color: transparent; color: var(--maptifier-text-secondary); border-width: 0; font-size: 16px; visibility: hidden;" />
+            <ui:Button text="Next" name="next-btn" class="maptifier-button" style="width: 120px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

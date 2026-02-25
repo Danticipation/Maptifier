@@ -1,0 +1,22 @@
+{
+    "name": "Maptifier.Layers",
+    "rootNamespace": "Maptifier.Layers",
+    "references": [
+        "Maptifier.Core",
+        "Maptifier.Display",
+        "Maptifier.Media",
+        "Maptifier.Warping",
+        "Maptifier.Masking",
+        "Maptifier.Drawing",
+        "Maptifier.Effects"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

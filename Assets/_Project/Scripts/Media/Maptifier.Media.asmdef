@@ -1,0 +1,16 @@
+{
+    "name": "Maptifier.Media",
+    "rootNamespace": "Maptifier.Media",
+    "references": [
+        "Maptifier.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

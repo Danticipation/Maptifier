@@ -1,0 +1,199 @@
+/* Maptifier Dark Theme - UI Toolkit Stylesheet */
+
+/* ========== Root Variables ========== */
+:root {
+    --maptifier-bg-primary: #0D1117;
+    --maptifier-bg-secondary: #161B22;
+    --maptifier-bg-tertiary: #21262D;
+    --maptifier-accent-cyan: #00D4FF;
+    --maptifier-accent-magenta: #FF2D78;
+    --maptifier-accent-green: #3FB950;
+    --maptifier-text-primary: #E6EDF3;
+    --maptifier-text-secondary: #8B949E;
+    --maptifier-text-disabled: #484F58;
+    --maptifier-border: #30363D;
+    --maptifier-danger: #F85149;
+    --maptifier-warning: #D29922;
+    --maptifier-success: #3FB950;
+    --maptifier-radius: 8px;
+    --maptifier-touch-target: 56px;
+}
+
+/* ========== Base Element Styles ========== */
+.maptifier-root {
+    flex-grow: 1;
+    flex-direction: column;
+    background-color: var(--maptifier-bg-primary);
+    width: 100%;
+    height: 100%;
+}
+
+.maptifier-topbar {
+    height: 48px;
+    background-color: var(--maptifier-bg-secondary);
+    flex-direction: row;
+    align-items: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-bottom-width: 1px;
+    border-bottom-color: var(--maptifier-border);
+}
+
+.maptifier-canvas-area {
+    flex-grow: 1;
+    background-color: #000000;
+}
+
+.maptifier-toolbar {
+    height: 64px;
+    background-color: var(--maptifier-bg-secondary);
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-top-width: 1px;
+    border-top-color: var(--maptifier-border);
+}
+
+.maptifier-toolbar__button {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background-color: transparent;
+    transition-property: background-color;
+    transition-duration: 0.15s;
+}
+
+.maptifier-toolbar__button:hover {
+    background-color: var(--maptifier-bg-tertiary);
+}
+
+.maptifier-toolbar__button--active {
+    background-color: rgba(0, 212, 255, 0.2);
+    border-width: 2px;
+    border-color: var(--maptifier-accent-cyan);
+}
+
+.maptifier-toolbar__icon {
+    width: 28px;
+    height: 28px;
+    color: var(--maptifier-text-primary);
+}
+
+.maptifier-drawer {
+    position: absolute;
+    right: 0;
+    top: 48px;
+    bottom: 64px;
+    width: 280px;
+    background-color: var(--maptifier-bg-secondary);
+    translate: 280px 0;
+    transition-property: translate;
+    transition-duration: 0.2s;
+}
+
+.maptifier-drawer--open {
+    translate: 0 0;
+}
+
+.maptifier-toast {
+    position: absolute;
+    bottom: 80px;
+    align-self: center;
+    background-color: var(--maptifier-bg-tertiary);
+    padding: 12px 24px;
+    border-radius: 24px;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.3s;
+}
+
+.maptifier-toast--visible {
+    opacity: 1;
+}
+
+.maptifier-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+}
+
+.maptifier-status-dot--connected {
+    background-color: var(--maptifier-success);
+}
+
+.maptifier-status-dot--disconnected {
+    background-color: var(--maptifier-danger);
+}
+
+.maptifier-label {
+    color: var(--maptifier-text-primary);
+    font-size: 14px;
+}
+
+.maptifier-label--secondary {
+    color: var(--maptifier-text-secondary);
+    font-size: 12px;
+}
+
+/* ========== Slider (maptifier-slider) ========== */
+.maptifier-slider {
+    height: 32px;
+}
+
+.maptifier-slider .unity-base-slider__tracker {
+    height: 6px;
+    background-color: var(--maptifier-bg-tertiary);
+    border-radius: 3px;
+}
+
+.maptifier-slider .unity-base-slider__dragger {
+    width: 20px;
+    height: 20px;
+    background-color: var(--maptifier-accent-cyan);
+    border-radius: 10px;
+}
+
+.maptifier-slider .unity-base-slider__fill {
+    background-color: var(--maptifier-accent-cyan);
+    border-radius: 3px;
+}
+
+/* ========== Button ========== */
+.maptifier-button {
+    height: 44px;
+    background-color: var(--maptifier-accent-cyan);
+    color: #000000;
+    border-radius: var(--maptifier-radius);
+    font-size: 14px;
+    transition-property: scale;
+    transition-duration: 0.1s;
+}
+
+.maptifier-button:active {
+    scale: 0.95;
+}
+
+/* ========== Settings Overlay ========== */
+.maptifier-settings-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.maptifier-settings-panel {
+    width: 90%;
+    max-width: 400px;
+    max-height: 80%;
+    background-color: var(--maptifier-bg-secondary);
+    border-radius: var(--maptifier-radius);
+    flex-direction: column;
+    overflow: hidden;
+}

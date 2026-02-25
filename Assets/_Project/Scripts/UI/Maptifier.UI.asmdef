@@ -1,0 +1,25 @@
+{
+    "name": "Maptifier.UI",
+    "rootNamespace": "Maptifier.UI",
+    "references": [
+        "Maptifier.Core",
+        "Maptifier.Display",
+        "Maptifier.Input",
+        "Maptifier.Layers",
+        "Maptifier.Effects",
+        "Maptifier.Drawing",
+        "Maptifier.Warping",
+        "Maptifier.Masking",
+        "Maptifier.Media",
+        "Maptifier.Projects"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

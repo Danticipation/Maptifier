@@ -1,0 +1,16 @@
+{
+    "name": "Maptifier.Effects",
+    "rootNamespace": "Maptifier.Effects",
+    "references": [
+        "Maptifier.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

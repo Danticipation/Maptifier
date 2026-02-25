@@ -1,0 +1,241 @@
+Issue Type,Epic Name,Summary,Description,Acceptance Criteria,Story Points,Labels,Components,Priority,Assignee Role,Epic Link
+Epic,,MAPT-SETUP,"Phase 0: Project Setup and Spikes — Unity project creation, CI pipeline, 3 technical spikes (external display, video pipeline, drawing latency), team standards. Unity 6 LTS project with URP + Android config. GitHub + Git LFS + CI pipeline. Coding standards + folder structure + assembly defs. Initial adaptive icon from logo #1.","- Unity 6 LTS project with URP configured for Android committed to GitHub with Git LFS
+- Working CI pipeline (GitHub Actions) building debug APKs
+- Spike results for: external display output, video-to-RenderTexture, and touch drawing latency
+- Coding standards document, branching strategy, and Jira board populated
+- Initial adaptive icon set generated from Maptifier #1 logo",13,setup,core,High,Core Dev Lead,
+Story,MAPT-SETUP,Create Unity 6 LTS project with full Android configuration,"Create new Unity 6 LTS (2025.3.x) project using URP template. Configure: IL2CPP, ARM64, Vulkan primary + GLES 3.2 fallback, Linear color space, min SDK 29, target SDK 34. Generate and commit initial adaptive icon set from Maptifier #1 logo (foreground + background layers).","- Project opens cleanly and builds to APK without errors
+- Icon shows correctly on launcher and splash
+- Player Settings match spec (IL2CPP, ARM64, Vulkan + GLES 3.2, Linear, SDK 29/34)",5,setup,core,High,Core Dev Lead,MAPT-SETUP
+Story,MAPT-SETUP,"Set up GitHub repo, Git LFS, and GitHub Actions CI","Create private repo maptifier-android with branch protection on main (require PR reviews). Set up .gitignore (Unity standard), Git LFS for *.png, *.jpg, *.mp4, *.fbx, *.asset, *.shader. Configure GitHub Actions to build debug APK on push to develop and upload artifact.","- CI passes on first push to develop
+- Debug APK artifact is downloadable from Actions
+- APK installs and launches on test device
+- Branch protection rules active on main",5,setup,core,High,Core Dev Lead,MAPT-SETUP
+Story,MAPT-SETUP,External Display Spike,"Implement minimal Android Presentation + DisplayManager plugin and C# bridge (NativeDisplayBridge.cs). Test on Samsung S23, Pixel 7, and one Xiaomi device with USB-C HDMI adapter. Document detection latency, supported resolutions, vsync behavior, disconnect handling, and Samsung DeX behavior.","- Content appears on external display within 2 seconds of cable plug-in
+- Full documentation of results per device/adapter combo in Wiki or README
+- DeX behavior documented with recommended handling",8,spike,display,High,Core Dev Lead,MAPT-SETUP
+Story,MAPT-SETUP,Video Pipeline Spike,"Set up VideoPlayer component playing a test 1080p H.264 MP4 to a RenderTexture. Measure decode latency, frame rate, memory usage on mid-range device. Test seek, loop, pause/resume, switching clips. Validate RenderTexture format (ARGB32 vs R8G8B8A8_UNorm) for downstream compositing.","- Runs at >= 30 fps on mid-range device
+- RenderTexture format compatible with downstream compositing
+- Full performance report with measurements",5,spike,graphics,High,Graphics Dev,MAPT-SETUP
+Story,MAPT-SETUP,Drawing Latency Spike,Implement minimal touch to Catmull-Rom spline to GL.Begin/End immediate-mode rendering. Measure touch-to-photon latency (target: under 30 ms perceived). Test EnhancedTouch from new Input System for multi-touch and pressure data availability across devices.,"- Latency < 30 ms perceived on test devices
+- Pressure data availability documented per device
+- Velocity-based fallback simulation working",5,spike,drawing,High,Graphics Dev,MAPT-SETUP
+Story,MAPT-SETUP,"Create coding standards, folder structure, and assembly definitions","Write coding standards doc covering naming conventions, lean MVC architecture, ScriptableObject events, ServiceLocator as only allowed singleton. Create full folder structure (Assets/_Project/Scripts/Core|Display|Drawing|Effects|Input|Layers|Masking|Media|Projects|UI|Warping, Shaders, Materials, Prefabs, UI, Resources, Addressables, Plugins/Android). Create ServiceLocator.cs stub. Set up assembly definitions for each module.","- All devs can reference the standards doc
+- Project compiles with zero warnings
+- Assembly definitions in place for all modules",3,setup,core,Medium,Core Dev Lead,MAPT-SETUP
+Story,MAPT-SETUP,Initial style guide and wireframes,"Designer delivers dark-theme style guide: color palette (navy/cyan/magenta from logo), typography (system sans-serif), spacing/grid system. Wireframes for primary screens: Canvas View, Layer Panel, Effects Drawer, Project List. Touch target sizes minimum 48dp (prefer 56dp for gloved/dark-room use).","- Style guide approved by Product Owner
+- Wireframes for all primary screens delivered
+- Imported into Figma project",3,design,ui,Medium,UI/UX Designer,MAPT-SETUP
+Story,MAPT-SETUP,Device matrix and Firebase setup,"QA creates device matrix spreadsheet (OEM, model, SoC, Android version, USB-C alt-mode support, screen size). Set up Firebase Crashlytics and Firebase Analytics SDKs in Unity project. Install debug APKs from CI on all test devices.","- Spreadsheet shared with team
+- Firebase project linked in Unity
+- Crashlytics and Analytics verified on at least one device",2,qa,core,Medium,QA Engineer,MAPT-SETUP
+Epic,,MAPT-INFRA,"Phase 1: Infrastructure and External Display — Production-quality external display pipeline, input system foundation, base URP rendering loop, and base UI shell. Robust external display detection, connection, resolution negotiation, hot-plug support, and clean output. Input system with gesture recognizers. Dark-themed UI shell.","- External display connects and shows content within 2 seconds of cable plug-in
+- Hot-plug 20 times without crash or leak
+- Preview on phone matches external output (aspect-ratio corrected)
+- Gesture system correctly differentiates tap/drag/pinch/rotate
+- Frame rate: 60 fps with static RenderTexture output",21,infrastructure,core,High,Core Dev Lead,
+Story,MAPT-INFRA,Implement production DisplayService with hot-plug support,"Refactor spike code into production DisplayService: IDisplayService interface with OnDisplayConnected/OnDisplayDisconnected/OnResolutionChanged events. AndroidDisplayService implementation using DisplayManager.DisplayListener. EditorDisplayService mock for in-editor testing. Resolution negotiation via Display.getSupportedModes(). Handle cable disconnect, app backgrounding, app resume, display resolution change. Vsync strategy: targetFrameRate=60, vSyncCount=0.","- External content renders cleanly on projector
+- Phone UI remains private (no UI leak to external)
+- Handles unplug/replug gracefully 20+ times without crash
+- Resolution negotiated correctly per device
+- WakeLock + FLAG_KEEP_SCREEN_ON keeps rendering when screen off",8,infrastructure,display,High,Core Dev Lead,MAPT-INFRA
+Story,MAPT-INFRA,Set up new Input System + gesture recognizers,"Configure New Input System with EnhancedTouch enabled (via EnhancedTouchSupport.Enable()). Build InputService: raw touch tracking (up to 10 touches), gesture recognizer state machine (Idle to Tap/Drag/Pinch/Rotate), gesture events, screen-space to canvas-space coordinate transformer. Implement canvas viewport: pan (two-finger drag), zoom (pinch), with inertia and bounds clamping.","- Gestures feel responsive with no conflicts with UI
+- Correctly differentiates tap/drag/pinch/rotate with zero false triggers
+- Canvas pan/zoom smooth with inertia",5,input,core,High,Core Dev Lead,MAPT-INFRA
+Story,MAPT-INFRA,Base URP render loop with CompositeRenderer and ExternalDisplayPass,Create CompositeRenderer: allocate composite RenderTexture matching external display resolution. Blit to phone preview (aspect-ratio letterboxed) AND to external display surface. Implement RenderTexturePool for reusable RT allocation. Set up URP custom ScriptableRendererFeature: CompositePass (blits layer RTs through mixer into composite RT) and ExternalDisplayPass (copies composite RT to external surface with sRGB write-off Material for linear-expecting projectors).,"- 60 fps target hit on external display with no tearing
+- Phone preview matches external output (aspect-ratio corrected)
+- No RT leaks after 10 minutes of operation
+- Color output correct on projectors expecting linear input",5,graphics,core,High,Graphics Dev,MAPT-INFRA
+Story,MAPT-INFRA,Build dark-themed UI shell,"Implement base UI Toolkit layout: top bar (project name, settings gear, display status indicator), center canvas preview area (touch-interactive), bottom tool bar (Select, Warp, Mask, Draw, Effects with 56dp icons), right drawer (layer panel, collapsed by default). Dark theme USS stylesheet matching style guide. Display connection status with real-time indicator and toast notifications.","- UI is dark and responsive
+- Matches approved style guide
+- All touch targets >= 48dp
+- Display status indicator shows green/red correctly
+- No UI elements visible on external display",5,ui,ui,Medium,UI/UX Dev,MAPT-INFRA
+Story,MAPT-INFRA,QA: External display device matrix testing,"Test external display on all devices in matrix with at least 3 different HDMI adapters. Stress test hot-plug (rapid connect/disconnect). Test with HDMI adapter, USB-C hub, wireless dongle (baseline detection). Log and report resolution negotiation results per device/adapter combo. Verify no UI elements appear on external display.","- Test report covering all device/adapter combinations
+- All hot-plug tests pass
+- Resolution negotiation results documented
+- No UI leak to external display confirmed",3,qa,display,High,QA Engineer,MAPT-INFRA
+Epic,,MAPT-MAPPING,"Phase 2: Core Mapping Engine — Media import from gallery, 4-corner projective warp, basic mesh warp (4x4 grid), polygon masking, brush masking, undo/redo system. All transforms output correctly to external display.","- Import 1080p photo and video, warp each, see result on projector within 10 seconds of import
+- 4-corner warp: drag any corner, preview updates at 60 fps, output matches preview
+- Mesh warp (16 control points): drag points smoothly, no tearing, 60 fps
+- Polygon mask: create 8+ vertex polygon, mask applies in real time
+- Brush mask: paint mask at 60 fps with no visible latency",26,mapping,core,High,Graphics Dev,
+Story,MAPT-MAPPING,Media import from Android gallery,"Implement MediaImportService: launch ACTION_PICK/ACTION_GET_CONTENT intent for images and video. Handle content:// URI resolution, copy to app-local storage. Supported formats: JPEG, PNG, WebP (images), MP4 H.264, VP9 (video). Generate 256x256 thumbnail on import. Implement MediaSource abstraction with ImageSource and VideoSource both implementing IMediaSource. Handle Android scoped storage permissions (READ_MEDIA_IMAGES, READ_MEDIA_VIDEO for SDK 33+).","- Supported formats load without crash
+- Preview shows in canvas within 3 seconds
+- Permission request with rationale dialog works correctly
+- Thumbnails generated for project browser
+- EXIF orientation handled (rotated images display correctly)
+- Images > 4096x4096 downscaled on import",5,import,media,High,Core Dev Lead,MAPT-MAPPING
+Story,MAPT-MAPPING,Implement 4-corner projective warp shader,Implement WarpMesh: subdivided quad mesh with configurable resolution. Implement FourCornerWarp with 4 draggable handles. Critical: implement projective texture mapping shader with homogeneous divide in fragment (uv = h.xy / h.w) for true perspective-correct sampling. Not bilinear vertex interpolation which produces bowtie distortion. Vertex positions in NativeArray<float3> for Burst compatibility.,"- No bowtie distortion on trapezoidal warps
+- Corners snap accurately when dragged
+- 60 fps during active corner dragging on mid-range device
+- Handles visible as 20dp circles with highlight on active",8,shader,mapping,High,Graphics Dev,MAPT-MAPPING
+Story,MAPT-MAPPING,Basic mesh warp (4x4 grid),Implement MeshWarp: NxM grid of control points (default 4x4). Catmull-Rom or B-spline interpolation between control points for smooth deformation. Vertex buffer updated via Mesh.SetVertices with MeshUpdateFlags.DontRecalculateBounds. Draggable handles at each control point with guide lines and snap-to-grid option.,"- Smooth curves on irregular surfaces
+- 16 control points all draggable simultaneously
+- No mesh tearing with extreme deformation
+- 60 fps during active mesh editing",5,shader,mapping,Medium,Graphics Dev,MAPT-MAPPING
+Story,MAPT-MAPPING,Polygon + brush masking tools,"Implement MaskRenderer: renders to single-channel RT (R8 format). Mask RT multiplied with layer RT in composite shader. PolygonMask: tap to place vertices, double-tap/close to complete, ear-clipping triangulation, multiple polygons (additive/subtractive), invert mode. BrushMask: stamp-based rendering along touch path, adjustable radius (pinch) and hardness (slider), eraser mode (BlendOp RevSub). Both serializable for project save.","- Masked areas transparent on output
+- Polygon with 8+ vertices works correctly
+- Brush mask paints at 60 fps with no visible latency
+- Eraser mode removes mask cleanly
+- Invert mode works correctly",5,masking,core,Medium,Graphics Dev,MAPT-MAPPING
+Story,MAPT-MAPPING,Undo/redo system (Command pattern),"Implement undo/redo using Command pattern (ScriptableObject-based). Support warp changes, mask changes, drawing strokes. Ring buffer limited to 20 actions. Undo/redo buttons in toolbar with disabled state when stack empty.","- Undo/redo works for all mapping operations
+- Stack correctly limited to 20 actions
+- Buttons reflect available actions",3,core,core,Medium,Core Dev Lead,MAPT-MAPPING
+Story,MAPT-MAPPING,Warp and mask mode UI,"Warp mode UI: show/hide control point handles, corner vs. mesh mode toggle. Mask mode UI: polygon tool, brush tool, radius slider, hardness slider, invert toggle, clear button. Tool switching: bottom bar highlights active tool, shows relevant sub-options. Import button: FAB or menu item launching gallery picker.","- Tool switching feels intuitive
+- Correct sub-options appear per tool
+- All sliders responsive and correctly sized for touch",3,ui,ui,Medium,UI/UX Dev,MAPT-MAPPING
+Story,MAPT-MAPPING,QA: Media import and mapping edge cases,"Test import with: tiny images (16x16), huge images (8K), corrupt files, DRM-protected video, various codecs, EXIF-rotated images. Test warp with: extreme corner positions, overlapping corners, very thin trapezoids, degenerate mesh triangles. Test mask with: complex polygons (50+ vertices), rapid brush painting. Memory profiling: import 10+ high-res images. Test on different aspect ratios (16:9, 20:9, foldables).","- No crashes on any edge case input
+- Graceful error messages for unsupported formats
+- Memory stays under 512 MB with 10+ imported images
+- All aspect ratios render correctly",3,qa,mapping,High,QA Engineer,MAPT-MAPPING
+Epic,,MAPT-CREATIVE,"Phase 3: Creative Tools — Drawing and Effects — Fluid real-time drawing engine with pressure/velocity simulation, stroke smoothing with prediction buffer. 5-8 real-time GPU effects: kaleidoscope, tunnel, color cycle/morph, wave distortion, pixelate, edge glow, chromatic aberration, blur. Effect parameter UI with live preview. Effects apply per-layer before mixing.","- Drawing feels fluid and responsive (< 20 ms touch-to-pixel latency) on mid-range devices
+- Stroke rendering smooth (no visible segmentation) at fast swipe speeds
+- Each effect runs at 60 fps individually on mid-range device
+- 2 effects stacked per layer still maintains 60 fps
+- Effect parameter changes preview in real time with no stutter",26,creative,core,High,Graphics Dev,
+Story,MAPT-CREATIVE,Fluid drawing engine with pressure/velocity simulation,"Implement DrawingCanvas: dedicated RenderTexture per layer. Stroke rendering pipeline: capture touch points via EnhancedTouch, fit Catmull-Rom spline (4-point window), adaptive subdivision, stamp brush texture with interpolated size/opacity. Size = base * pressure * velocity curve. Implement 1-2 frame prediction buffer for 60 Hz touch devices. Pressure simulation: velocity-based fallback (fast=thin, slow=thick). Soft round brush (Gaussian 64x64) and hard round brush. Use premultiplied alpha. Undo via RT snapshot ring buffer (20 states). Clear canvas and eraser tool.","- Drawing feels natural on all test devices
+- Pressure affects thickness/opacity correctly
+- Prediction buffer reduces perceived latency on 60 Hz touch devices
+- Samsung S Pen true pressure values preferred when available
+- No dark fringing at stroke edges (premultiplied alpha)
+- Undo ring buffer works without exceeding memory budget",8,drawing,creative,High,Graphics Dev,MAPT-CREATIVE
+Story,MAPT-CREATIVE,Implement 5-8 real-time GPU effects,"Implement EffectPipeline: ordered IEffect list per layer, ping-pong temp RTs, max 3 effects per layer. Effects via Shader Graph + hand-written fallback: (1) Kaleidoscope - polar UV modulo, params: segments 2-32, rotation, center. (2) Tunnel/Zoom - polar UV + animated radius. (3) Color Cycle - HSV hue shift over time. (4) Wave Distortion - sinusoidal UV displacement. (5) Pixelate - UV grid quantization. (6) Edge Glow - Sobel + color overlay. (7) Chromatic Aberration - RGB channel UV offset. (8) Blur - Dual Kawase (mobile-efficient). All shaders use half precision except UVs, minimize texture samples, avoid branching, use step/lerp.","- All 8 effects run at 60 fps individually on mid-range device
+- 2 effects stacked maintain 60 fps on mid-range
+- Parameters update in real time with no stutter
+- Shaders pass Mali Offline Compiler analysis without warnings
+- All marked with UniversalPipeline render tag",8,effects,shader,High,Graphics Dev,MAPT-CREATIVE
+Story,MAPT-CREATIVE,Drawing toolbar and color picker UI,"Drawing toolbar: brush type selector, color picker (HSV wheel + recent colors strip), size slider (with preview circle), opacity slider. Color picker: compact HSV wheel expanding on tap, eye-dropper tool (tap canvas to sample color). All controls minimum 48dp touch targets.","- Color picker responsive and intuitive
+- Eye-dropper samples correctly from canvas
+- Size preview circle updates in real time
+- Recent colors strip shows last 8 used colors",5,ui,ui,Medium,UI/UX Dev,MAPT-CREATIVE
+Story,MAPT-CREATIVE,Effect browser and parameter UI,Scrollable grid of effect thumbnails with live-preview icons. Tap to add effect to current layer. Active effects show as cards with parameter sliders. Drag to reorder effects chain. Swipe to remove. Real-time preview: parameter changes apply immediately (no apply button).,"- User can browse, select, and tweak effects fluidly
+- Effect chain order changeable by drag
+- Removal via swipe gesture works
+- All parameter changes preview instantly",5,ui,ui,Medium,UI/UX Dev,MAPT-CREATIVE
+Story,MAPT-CREATIVE,QA: Drawing and effects testing,"Drawing latency measurement via high-speed camera. Effect performance profiling: solo and combinations (2x, 3x stacked). Test drawing with: stylus (Samsung S Pen), finger, fast swipes, slow strokes, multi-touch. Test effects with: 4K source, video source, extreme parameter values. Memory profiling: undo stack with 20 drawing states.","- Latency measurements documented per device
+- Performance numbers for all effect combinations
+- No crashes with extreme parameter values
+- Undo stack memory under budget",3,qa,creative,High,QA Engineer,MAPT-CREATIVE
+Epic,,MAPT-LAYERS,"Phase 4: Layers, Mixing and Performance — Two independent layers (A/B), each with own media, warp, mask, drawing, effects. Live crossfade slider with multiple blend modes. Layer solo/mute/opacity. Performance optimization: shader variant stripping, GC elimination, adaptive quality system with user-visible Performance Mode toggle.","- Both layers active with media + 1 effect each: 60 fps on mid-range device
+- Crossfade slider produces smooth, real-time blend with no stutter
+- Memory usage under 512 MB total with both layers fully loaded
+- No GC spikes > 2 ms during mixing operations
+- Adaptive quality degrades gracefully",21,layers,core,High,Graphics Dev,
+Story,MAPT-LAYERS,Dual independent RenderTexture layer system,"Implement LayerManager: manages two Layer instances (A and B). Each Layer owns: MediaSource, WarpMesh, MaskRenderer, DrawingCanvas, EffectPipeline, RenderTexture outputRT. Rendering is sequential: Layer A -> Layer B -> mix -> composite -> external display. Layer controls: solo, mute, opacity (per-layer alpha multiplier).","- Layers independently configurable
+- Layers can be swapped and opacity controlled
+- Solo/mute work correctly
+- Layer with no content renders as transparent (not black)",5,layers,graphics,High,Graphics Dev,MAPT-LAYERS
+Story,MAPT-LAYERS,Live crossfade mixer + blend modes,"Implement LayerMixer: crossfade output = lerp(layerA, layerB, mixValue). Blend modes via custom shader using MaterialPropertyBlock: Normal, Additive, Multiply, Screen, Overlay, Difference. Blend mode and mix value controlled by UI slider + mode picker. Single blit pass.","- Smooth transitions between layers
+- All 6 blend modes look correct
+- Crossfade slider responsive at 60 fps
+- Blend with fully transparent layer has no visual artifact",5,mixing,graphics,High,Graphics Dev,MAPT-LAYERS
+Story,MAPT-LAYERS,Implement adaptive quality system with Performance Mode,"Monitor frame time via FrameTimingManager. If > 14 ms for 10 consecutive frames: (1) reduce effect quality, (2) reduce composite RT resolution (75% -> 50%), (3) disable least-recently-added effect. Step back up when < 10 ms for 30 frames. Implement GPU capability tiers: Tier 1 (flagship) full quality, Tier 2 (mid-range) 75% RT, Tier 3 (low-end) 50% RT. User toggle in Settings: Performance Mode (forces Tier 2) vs Quality Mode (full, adaptive). Default to Quality Mode on first launch, persist in PlayerPrefs. Show toast on first switch: 'Performance Mode enabled - ideal for live shows'.","- Sustained 60 fps on mid-range during dual-layer + effects
+- Adaptive quality kicks in before visible frame drops
+- Performance Mode toggle works and persists across launches
+- Toast appears on first mode switch only",8,perf,core,High,Graphics Dev,MAPT-LAYERS
+Story,MAPT-LAYERS,Performance optimization pass: GC elimination and shader stripping,"Shader variant stripping: audit URP variants, strip unused (fog, lightmaps). RenderTexture audit: ensure proper release, use GetTemporary/ReleaseTemporary. Draw call optimization: batch UI, MaterialPropertyBlock, minimize material switches. GC elimination: audit per-frame allocations, StringBuilder/Span<char>, NativeArray/NativeList, cache component refs, stackalloc for small arrays. GPU profiling: Mali Offline Compiler / Adreno GPU Profiler.","- Zero per-frame GC allocations on hot paths
+- Shader build size reduced by >= 30 MB
+- No RT leaks after 30-minute run
+- GPU profiling report for all target GPUs",5,perf,core,High,Graphics Dev,MAPT-LAYERS
+Story,MAPT-LAYERS,Layer panel and crossfade mixer UI,"Layer panel (right drawer): two layer cards with thumbnail preview, media name, effect badges, solo/mute/opacity controls. Tap to select active layer. Crossfade slider: horizontal at bottom of canvas, large thumb. Blend mode picker: dropdown on mixer slider. Performance indicator: subtle colored dot (green/yellow/red) in status bar.","- Layer panel intuitive and responsive
+- Crossfade slider thumb easy to grab
+- Active layer clearly indicated
+- Performance dot updates in real time",3,ui,ui,Medium,UI/UX Dev,MAPT-LAYERS
+Story,MAPT-LAYERS,QA: Layer and performance testing,Performance test matrix: all combinations of (no media/image/video) x (no effects/1/2 effects) x (no drawing/drawing) across both layers. Memory leak test: 30-minute continuous layer switching. Crossfade smoothness: continuous slider for 60 seconds. Test on Snapdragon 695 class: verify adaptive quality kicks in. Test dual video decode: verify fallback when only 1 decoder available.,"- All performance combinations documented
+- No memory leaks after 30 minutes
+- Crossfade maintains 60 fps during continuous use
+- Adaptive quality verified on low-tier device",3,qa,layers,High,QA Engineer,MAPT-LAYERS
+Epic,,MAPT-EXPORT,"Phase 5: Import/Export and Project System — Project save/load (all settings, warp state, masks, drawings, media references, effect configs). Project browser with thumbnails and metadata. Video clip export (MP4) and screenshot export (PNG). Auto-save every 60 seconds without frame drop.","- Save and reload complex project with perfect fidelity
+- Project browser shows all saved projects with thumbnails
+- Export 10-second 1080p MP4 in under 30 seconds on mid-range device
+- Auto-save triggers every 60 seconds without frame drop",16,export,core,High,Core Dev Lead,
+Story,MAPT-EXPORT,JSON project save/load with auto-save,"Define ProjectData JSON schema (version, name, timestamps, resolution, layers with media/warp/mask/drawing/effects, mixer state). Implement ProjectManager: SaveProject (serialize to JSON, save drawing RTs as PNG, copy media, capture thumbnail), LoadProject, DeleteProject, ListProjects. Projects in Application.persistentDataPath/Projects/{guid}/. Auto-save: timer-based (60s) + event-based, .autosave subfolder, rotate last 3. Non-blocking: JSON on main thread, textures on background thread. Note: Texture2D.EncodeToPNG() must run on main thread via coroutine.","- Projects save and load with perfect fidelity (pixel-level comparison)
+- Auto-save at 60-second intervals without frame drop
+- 256x256 thumbnails generated for browser
+- Corrupt project JSON shows error, does not crash
+- Missing media shows placeholder, does not crash",5,save,core,High,Core Dev Lead,MAPT-EXPORT
+Story,MAPT-EXPORT,Video clip and screenshot export,"Implement ExportService. Screenshot: ReadPixels from composite RT, EncodeToPNG, save to gallery via MediaStore API. Video export: Use Unity Recorder (free in 6.x) for dev prototyping; switch to custom AsyncGPUReadback + Android MediaCodec (H.264 hardware encoder) + MediaMuxer pipeline for release (avoids Recorder watermark/license issues). Target: 1080p @ 30 fps. Progress bar with cancel. Save to Movies/Maptifier/ via MediaStore. Note: AsyncGPUReadback has 2-3 frame latency; buffer frames. Fallback to ReadPixels on GLES devices without AsyncGPUReadback support.","- Export 10s clip at 1080p 30fps in under 30 seconds
+- Screenshot saves to gallery correctly
+- Progress bar shows and cancel works
+- Export captures composite output, not phone preview
+- Works on both Vulkan and GLES devices",5,export,media,High,Core Dev Lead,MAPT-EXPORT
+Story,MAPT-EXPORT,Project browser UI,Grid of project cards (thumbnail + name + last modified). Create new project button (prominent). Long-press for delete/duplicate/rename context menu. Search/filter when 10+ projects. Sort by last modified (default).,"- Intuitive project management
+- All CRUD operations work
+- Search filters correctly
+- Empty state handled gracefully",3,ui,ui,Medium,UI/UX Dev,MAPT-EXPORT
+Story,MAPT-EXPORT,QA: Save/load and export edge cases,Test save/load roundtrip fidelity (pixel comparison). Test corrupt JSON handling. Test export with limited storage. Test auto-save during heavy rendering. Test missing media files after import. Test project from different aspect ratio device. Test storage full during save.,"- All edge cases handled without crash
+- Graceful error messages for all failure modes
+- Auto-save does not cause frame drops
+- Cross-device project loading handles aspect ratio differences",3,qa,export,High,QA Engineer,MAPT-EXPORT
+Epic,,MAPT-POLISH,"Phase 6: Polish, UI/UX and Onboarding — Onboarding flow (first-launch tutorial), UI animations and transitions, haptic feedback, settings screen, 3-5 template projects, app icon and splash screen, Firebase Analytics integration.","- New user completes onboarding and creates first projection in under 3 minutes
+- All UI transitions smooth (no jank)
+- Settings changes apply immediately without restart
+- Template projects load correctly on all test devices
+- Splash screen displays correctly on all screen sizes",16,polish,ui,Medium,UI/UX Designer,
+Story,MAPT-POLISH,Onboarding flow (first launch tutorial),"4-5 screen onboarding: (1) Welcome + branding with logo animation, (2) Connect your projector with cable illustration and detection, (3) Import or draw quick demo, (4) Warp to fit with corner-drag animation, (5) You're ready with create first project. Implement with UI Toolkit, swipe-to-advance, skip button. Coach marks: contextual tooltips on first use of each tool.","- New users complete onboarding in under 3 minutes
+- Skip button available on all screens
+- Coach marks appear on first tool use
+- Onboarding detects if projector already connected",5,onboard,ui,Medium,UI/UX Dev,MAPT-POLISH
+Story,MAPT-POLISH,UI animations and haptic feedback,"Panel slide-in/out animations (200 ms ease-in-out). Tool switch transitions. Button press feedback (scale 95% + haptic). Toast notifications (slide up, auto-dismiss 3s). Haptic: use Android VibrationEffect.createOneShot(10, 128) via native plugin for subtle taps (not Handheld.Vibrate which is too crude).","- All transitions smooth at 60 fps
+- Haptic feedback subtle and appropriate
+- No animation jank during heavy rendering
+- App feels premium and responsive",5,ui,ui,Medium,UI/UX Dev,MAPT-POLISH
+Story,MAPT-POLISH,Settings screen,"Display section: resolution override, force display mode. Performance section: Quality/Balanced/Performance mode toggle. Drawing section: default brush size, pressure sensitivity curve. About section: version, licenses, feedback link. Dark theme with all states styled (pressed, disabled, focused).","- All settings apply immediately without restart
+- Settings persist across app launches
+- Performance mode toggle works with toast on first switch",3,ui,ui,Medium,UI/UX Dev,MAPT-POLISH
+Story,MAPT-POLISH,Template projects and content,"Create 3-5 template projects: Geometric Pulse (kaleidoscope + mesh warp), Holiday Lights (color cycle + 4-corner), Abstract Flow (wave distortion + drawing), Logo Spotlight (tunnel + edge glow). Store as Addressable assets. Generate template thumbnails for project browser.","- Templates load and render correctly on all test devices
+- Thumbnails show in project browser
+- Users can modify templates and save as new project",3,templates,creative,Low,UI/UX Designer,MAPT-POLISH
+Story,MAPT-POLISH,"Splash screen, app icon, and analytics","Implement splash screen with custom animated logo (1.5s max). Finalize adaptive icon set from Maptifier #1. Implement AnalyticsService (Firebase): events for app_open, project_created, project_loaded, media_imported, display_connected, export_completed, effect_applied, session_duration. No PII, GDPR consent dialog if EU distribution.","- Splash displays correctly on all screen sizes
+- App icon looks correct as adaptive and legacy
+- Analytics events fire correctly in release build
+- No PII collected",3,core,core,Medium,Core Dev Lead,MAPT-POLISH
+Story,MAPT-POLISH,QA: Onboarding usability and UI polish testing,"Onboarding usability test: 3+ non-technical users, record success rate and pain points. UI accessibility audit: contrast ratios >= 4.5:1 (WCAG AA), touch targets >= 48dp. Test all UI states: empty, error, loading, overflow text. Test templates on all devices.","- Usability test results documented
+- All contrast ratios meet WCAG AA
+- All touch targets >= 48dp
+- No broken UI states",3,qa,ui,Medium,QA Engineer,MAPT-POLISH
+Epic,,MAPT-TEST,"Phase 7: Testing, Optimization and Device Certification — Full test pass on 10+ devices across 3+ OEMs. Performance optimization for 60 fps on all targets. Crash-free rate > 99.5%. Memory under 512 MB. Battery optimization. Wireless display fallback. Thermal throttling testing under stage-like conditions.","- All target devices sustain 60 fps with dual layers + 1 effect each
+- No ANR in 100 test sessions
+- Cold start under 3 seconds on mid-range
+- Video export works on all tested devices
+- Zero critical bugs, under 5 major bugs remaining",21,test,qa,High,QA Engineer,
+Story,MAPT-TEST,Full device matrix testing (10+ devices),"Execute full test plan on: Samsung Galaxy S23/S24, Galaxy A54/A55, Pixel 7a/8a, Xiaomi Redmi Note 12/13 Pro, OnePlus Nord 3/4, Galaxy Tab S9. Test categories: Functional (every feature), Performance (fps, memory, battery, thermal), Stress (30-min continuous use, rapid switching, 10+ saves), Edge (airplane mode, low storage, low battery, TalkBack, split-screen), External display (every device + adapter), Lifecycle (home, recent apps, phone call, notification, rotation). Thermal throttling: 30-minute dual-layer + effects in 30-35C ambient simulating stage lights.","- Test report for every device/feature combination
+- All target devices pass performance thresholds
+- Thermal test shows no crash or sub-30fps drop
+- All lifecycle scenarios handled gracefully",8,test,qa,High,QA Engineer,MAPT-TEST
+Story,MAPT-TEST,Per-device GPU optimization pass,"Profile every device using Unity Profiler, FrameTimingManager, Android GPU Inspector (Adreno) / ARM Streamline (Mali). Optimize: Adreno (half precision, avoid dependent texture reads, Vulkan), Mali (minimize fragment complexity, avoid discard), PowerVR (tile-based compatibility). Implement GPU capability tiers: Tier 1 full, Tier 2 75% RT, Tier 3 50% RT. Detect via SystemInfo on first launch.","- All target devices meet 60 fps target
+- Per-device profiling reports completed
+- GPU tiers correctly detected and applied
+- Shader analysis clean on Mali Offline Compiler",5,perf,graphics,High,Graphics Dev,MAPT-TEST
+Story,MAPT-TEST,Wireless display fallback (Cast/Miracast),"Implement Miracast/Google Cast detection via MediaRouter API. Cast composite RT as media route. Known limitation: Cast has 100-200 ms latency; show warning to user. Test on Chromecast, Miracast-compatible TV, Samsung Smart View.","- Wireless display works as secondary option
+- Latency warning shown to user
+- Graceful fallback when wired unavailable",5,display,core,Medium,Core Dev Lead,MAPT-TEST
+Story,MAPT-TEST,Stability hardening,"Global exception handler: catch unhandled exceptions, log to Crashlytics, show recovery dialog. ANR watchdog: monitor main thread, log if approaching 5s threshold. Audit all async code for exception handling and cancellation. Test with Android 'Don't keep activities' enabled. Pre-warm critical shaders during splash to avoid first-launch compilation stutter (ShaderVariantCollection).","- Crash-free rate > 99.5% in 100 sessions
+- No ANR occurrences
+- No first-launch shader stutter
+- Recovery dialog works for unhandled exceptions",5,core,core,High,Core Dev Lead,MAPT-TEST
+Story,MAPT-TEST,Regression testing and visual comparison,Full regression pass after each optimization fix. Automated screenshot comparison for visual regression (capture composite output vs baseline). Verify no visual regressions from optimization changes.,"- Regression suite covers all features
+- Visual comparison baseline established
+- No regressions introduced by optimization",3,qa,qa,High,QA Engineer,MAPT-TEST
+Epic,,MAPT-RELEASE,"Phase 8: Release Preparation and Store Assets — Signed release AAB, Play Store listing (screenshots, feature graphic, description), privacy policy, ProGuard/R8 rules, pre-launch report via Firebase Test Lab, launch checklist.","- AAB passes Play Store pre-launch checks with no critical issues
+- AAB size: base APK <= 95 MB + asset packs <= 40 MB (total <= 135 MB installed)
+- All store assets meet Play Store requirements
+- Privacy policy covers all data collection
+- App rated Everyone on IARC content rating",13,release,core,High,Core Dev Lead,
+Story,MAPT-RELEASE,Build signed release AAB,"Configure release signing keystore (NOT in repo). ProGuard/R8 rules for Unity, Firebase, reflection-based code. Test release build thoroughly. Enable AAB + Play Asset Delivery for Addressables. Base APK target <= 95 MB, asset packs <= 40 MB. Version 1.0.0 / code 1. Final IL2CPP Release build with stripping. Use [Preserve] attribute / link.xml for reflection targets.","- AAB builds and signs correctly
+- Base APK <= 95 MB
+- ProGuard/R8 does not break serialization or shader loading
+- IL2CPP stripping does not remove needed code",5,release,core,High,Core Dev Lead,MAPT-RELEASE
+Story,MAPT-RELEASE,Prepare Play Store listing and assets,"Screenshots (5-8): external display projecting, 4-corner warping, drawing, effects library, dual-layer mixing, project browser, onboarding. Feature graphic: 1024x500 from logo. App icon: 512x512. Short description (80 char): Turn your Android phone into a pocket projection mapper. Full description with features and requirements. Demo video: 30-60 second screen recording.","- All assets meet Play Store size requirements
+- Screenshots show key features clearly
+- Description is keyword-optimized
+- Demo video shows core workflow",3,design,ui,Medium,UI/UX Designer,MAPT-RELEASE
+Story,MAPT-RELEASE,Privacy policy and content rating,"Privacy policy page (GitHub Pages): crash logs (Crashlytics), anonymous analytics (Firebase), no PII, no accounts, no ads, data retention policy. IARC content rating questionnaire. Target API level compliance (SDK 34 for 2026 Play Store). Pre-launch report via Firebase Test Lab on 10+ devices.","- Privacy policy published and linked in store listing
+- Content rating: Everyone
+- SDK 34 target compliance verified
+- Pre-launch report clean (no critical issues)",3,core,core,High,Core Dev Lead,MAPT-RELEASE
+Story,MAPT-RELEASE,QA: Final release validation,"Install release AAB via bundletool on all test devices. Full smoke test of every feature. Verify no debug logs, no dev watermarks, no placeholder content. Verify analytics fire in release. Verify Crashlytics works (intentional crash test). Final sign-off checklist.","- Release build passes full smoke test
+- No debug artifacts in release
+- Analytics and crash reporting verified
+- Sign-off checklist completed",3,qa,core,High,QA Engineer,MAPT-RELEASE

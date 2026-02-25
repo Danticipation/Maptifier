@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.maptifier.app">
+
+    <!-- Media access (SDK 33+) -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    
+    <!-- Legacy media access (SDK < 33) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="32" />
+    
+    <!-- Write for export -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    
+    <!-- Keep screen on during projection -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    
+    <!-- Foreground service for projection -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+    
+    <!-- Vibration for haptic feedback -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    
+    <!-- Internet for analytics/crash reporting -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:label="Maptifier"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/UnityThemeSelector"
+        android:hardwareAccelerated="true">
+
+        <!-- Foreground service for external display rendering -->
+        <service
+            android:name="com.maptifier.ProjectionService"
+            android:foregroundServiceType="mediaProjection"
+            android:exported="false" />
+            
+        <!-- Declare external display support -->
+        <meta-data
+            android:name="android.hardware.display.supported_modes"
+            android:value="true" />
+            
+    </application>
+    
+    <!-- Require USB host for HDMI adapter detection -->
+    <uses-feature android:name="android.hardware.usb.host" android:required="false" />
+    
+</manifest>

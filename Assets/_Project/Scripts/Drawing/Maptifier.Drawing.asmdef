@@ -1,0 +1,17 @@
+{
+    "name": "Maptifier.Drawing",
+    "rootNamespace": "Maptifier.Drawing",
+    "references": [
+        "Maptifier.Core",
+        "Maptifier.Input"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

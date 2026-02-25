@@ -1,0 +1,55 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement name="settings-overlay" class="maptifier-settings-overlay" style="display: none;">
+        <ui:VisualElement name="settings-panel" class="maptifier-settings-panel">
+            <ui:VisualElement class="maptifier-settings-header" style="flex-direction: row; justify-content: space-between; align-items: center; padding: 16px; border-bottom-width: 1px; border-bottom-color: var(--maptifier-border);">
+                <ui:Label text="Settings" class="maptifier-label" style="font-size: 20px; -unity-font-style: bold;" />
+                <ui:Button text="✕" name="settings-close-btn" class="maptifier-toolbar__button" style="width: 40px; height: 40px; font-size: 18px;" />
+            </ui:VisualElement>
+            
+            <ui:ScrollView name="settings-scroll" style="flex-grow: 1;">
+                <!-- Display Section -->
+                <ui:VisualElement name="section-display" style="padding: 16px; border-bottom-width: 1px; border-bottom-color: var(--maptifier-border);">
+                    <ui:Label text="Display" class="maptifier-label" style="font-size: 16px; -unity-font-style: bold; margin-bottom: 12px;" />
+                    <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 8px;">
+                        <ui:Label text="Resolution Override" class="maptifier-label--secondary" style="flex-grow: 1;" />
+                        <ui:DropdownField name="resolution-dropdown" choices="Auto,720p,1080p,4K" value="Auto" style="min-width: 120px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="flex-direction: row; align-items: center;">
+                        <ui:Label text="Force Display Mode" class="maptifier-label--secondary" style="flex-grow: 1;" />
+                        <ui:Toggle name="force-display-toggle" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                
+                <!-- Performance Section -->
+                <ui:VisualElement name="section-performance" style="padding: 16px; border-bottom-width: 1px; border-bottom-color: var(--maptifier-border);">
+                    <ui:Label text="Performance" class="maptifier-label" style="font-size: 16px; -unity-font-style: bold; margin-bottom: 12px;" />
+                    <ui:VisualElement style="flex-direction: row; align-items: center;">
+                        <ui:Label text="Performance Mode" class="maptifier-label--secondary" style="flex-grow: 1;" />
+                        <ui:Toggle name="performance-mode-toggle" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                
+                <!-- Drawing Section -->
+                <ui:VisualElement name="section-drawing" style="padding: 16px; border-bottom-width: 1px; border-bottom-color: var(--maptifier-border);">
+                    <ui:Label text="Drawing" class="maptifier-label" style="font-size: 16px; -unity-font-style: bold; margin-bottom: 12px;" />
+                    <ui:VisualElement style="margin-bottom: 12px;">
+                        <ui:Label text="Default Brush Size" name="brush-size-label" class="maptifier-label--secondary" />
+                        <ui:Slider name="brush-size-slider" low-value="1" high-value="100" value="24" class="maptifier-slider" />
+                    </ui:VisualElement>
+                    <ui:VisualElement>
+                        <ui:Label text="Pressure Sensitivity" name="pressure-label" class="maptifier-label--secondary" />
+                        <ui:Slider name="pressure-slider" low-value="0" high-value="2" value="1" class="maptifier-slider" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                
+                <!-- About Section -->
+                <ui:VisualElement name="section-about" style="padding: 16px;">
+                    <ui:Label text="About" class="maptifier-label" style="font-size: 16px; -unity-font-style: bold; margin-bottom: 12px;" />
+                    <ui:Label text="Version 1.0.0" name="version-label" class="maptifier-label--secondary" style="margin-bottom: 12px;" />
+                    <ui:Button text="Licenses" name="licenses-btn" class="maptifier-button" style="margin-bottom: 8px; width: 100%;" />
+                    <ui:Button text="Send Feedback" name="feedback-btn" class="maptifier-button" style="width: 100%;" />
+                </ui:VisualElement>
+            </ui:ScrollView>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
