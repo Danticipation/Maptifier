@@ -4,134 +4,137 @@ import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.MediaMuxer;
-import android.view.Surface;
 import android.util.Log;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
  * Native Android video encoder using MediaCodec and MediaMuxer.
- * Provides a Surface for Unity to render into via Graphics.Blit.
+ * Uses Input Buffers for maximum compatibility across devices without requiring complex EGL bridging.
  */
 public class MaptifierEncoder {
     private static final String TAG = "MaptifierEncoder";
-    private static final String MIME_TYPE = "video/avc"; // H.264
-    private static final int IFRAME_INTERVAL = 2; // 2 seconds between I-frames
+    private static final String MIME_TYPE = "video/avc";
+    private static final int IFRAME_INTERVAL = 2;
 
     private MediaCodec mEncoder;
-    private Surface mInputSurface;
     private MediaMuxer mMuxer;
     private int mTrackIndex;
     private boolean mMuxerStarted;
     private MediaCodec.BufferInfo mBufferInfo;
     private int mWidth;
     private int mHeight;
+    private byte[] mYuvBuffer;
 
-    public Surface init(String outputPath, int width, int height, int bitRate, int frameRate) throws IOException {
-        Log.d(TAG, "Initializing encoder: " + width + "x" + height + " @ " + bitRate + "bps, " + frameRate + "fps");
+    public void init(String outputPath, int width, int height, int bitRate, int frameRate) throws IOException {
+        Log.d(TAG, "Initializing InputBuffer encoder: " + width + "x" + height);
         
         mWidth = width;
         mHeight = height;
         mBufferInfo = new MediaCodec.BufferInfo();
+        // YUV420SP buffer size: width*height for Y, width*height/2 for UV
+        mYuvBuffer = new byte[width * height * 3 / 2];
 
         MediaFormat format = MediaFormat.createVideoFormat(MIME_TYPE, width, height);
-        format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+        format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible);
         format.setInteger(MediaFormat.KEY_BIT_RATE, bitRate);
         format.setInteger(MediaFormat.KEY_FRAME_RATE, frameRate);
         format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, IFRAME_INTERVAL);
 
         mEncoder = MediaCodec.createEncoderByType(MIME_TYPE);
         mEncoder.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
-        mInputSurface = mEncoder.createInputSurface();
         mEncoder.start();
 
         mMuxer = new MediaMuxer(outputPath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
         mTrackIndex = -1;
         mMuxerStarted = false;
-
-        return mInputSurface;
     }
 
-    /**
-     * Drains the encoder's output buffers and writes them to the muxer.
-     * Should be called after every frame is rendered to the surface.
-     */
-    public void drainEncoder(boolean endOfStream) {
+    public void encodeFrame(byte[] rgbaData, long presentationTimeUs) {
+        // Convert RGBA to YUV420SemiPlanar (NV21/NV12 style)
+        // This is a simple software conversion. For production at scale, 
+        // a specialized shader or native C++ conversion is faster, but this works for the prototype phase.
+        encodeYUV420SP(mYuvBuffer, rgbaData, mWidth, mHeight);
+
+        int inputBufferIndex = mEncoder.dequeueInputBuffer(10000);
+        if (inputBufferIndex >= 0) {
+            ByteBuffer inputBuffer = mEncoder.getInputBuffer(inputBufferIndex);
+            inputBuffer.clear();
+            inputBuffer.put(mYuvBuffer);
+            mEncoder.queueInputBuffer(inputBufferIndex, 0, mYuvBuffer.length, presentationTimeUs, 0);
+        }
+
+        drainEncoder(false);
+    }
+
+    private void drainEncoder(boolean endOfStream) {
         if (endOfStream) {
-            Log.d(TAG, "Signaling end of stream");
             mEncoder.signalEndOfStream();
         }
 
         while (true) {
             int encoderStatus = mEncoder.dequeueOutputBuffer(mBufferInfo, 10000);
             if (encoderStatus == MediaCodec.INFO_TRY_AGAIN_LATER) {
-                if (!endOfStream) break; // out of buffers, but not done yet
+                if (!endOfStream) break;
             } else if (encoderStatus == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
-                if (mMuxerStarted) {
-                    throw new RuntimeException("Format changed twice");
-                }
                 MediaFormat newFormat = mEncoder.getOutputFormat();
-                Log.d(TAG, "Encoder output format changed: " + newFormat);
                 mTrackIndex = mMuxer.addTrack(newFormat);
                 mMuxer.start();
                 mMuxerStarted = true;
-            } else if (encoderStatus < 0) {
-                Log.w(TAG, "Unexpected result from dequeueOutputBuffer: " + encoderStatus);
-            } else {
+            } else if (encoderStatus >= 0) {
                 ByteBuffer encodedData = mEncoder.getOutputBuffer(encoderStatus);
-                if (encodedData == null) {
-                    throw new RuntimeException("getOutputBuffer returned null");
-                }
-
                 if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_CODEC_CONFIG) != 0) {
-                    // Codec config data, ignore for muxing
                     mBufferInfo.size = 0;
                 }
-
-                if (mBufferInfo.size != 0) {
-                    if (!mMuxerStarted) {
-                        throw new RuntimeException("Muxer not started");
-                    }
+                if (mBufferInfo.size != 0 && mMuxerStarted) {
                     encodedData.position(mBufferInfo.offset);
                     encodedData.limit(mBufferInfo.offset + mBufferInfo.size);
                     mMuxer.writeSampleData(mTrackIndex, encodedData, mBufferInfo);
                 }
-
                 mEncoder.releaseOutputBuffer(encoderStatus, false);
-
-                if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
-                    if (!endOfStream) {
-                        Log.w(TAG, "Reached end of stream unexpectedly");
-                    } else {
-                        Log.d(TAG, "End of stream reached");
-                    }
-                    break;
-                }
+                if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) break;
             }
         }
     }
 
     public void release() {
-        Log.d(TAG, "Releasing encoder resources");
+        drainEncoder(true);
         try {
             if (mEncoder != null) {
                 mEncoder.stop();
                 mEncoder.release();
-                mEncoder = null;
-            }
-            if (mInputSurface != null) {
-                mInputSurface.release();
-                mInputSurface = null;
             }
             if (mMuxer != null) {
-                if (mMuxerStarted) {
-                    mMuxer.stop();
-                }
+                if (mMuxerStarted) mMuxer.stop();
                 mMuxer.release();
-                mMuxer = null;
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error during release: " + e.getMessage());
+            Log.e(TAG, "Release error: " + e.getMessage());
+        }
+    }
+
+    private void encodeYUV420SP(byte[] yuv420sp, byte[] rgba, int width, int height) {
+        final int frameSize = width * height;
+        int yIndex = 0;
+        int uvIndex = frameSize;
+
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                int r = rgba[(j * width + i) * 4] & 0xff;
+                int g = rgba[(j * width + i) * 4 + 1] & 0xff;
+                int b = rgba[(j * width + i) * 4 + 2] & 0xff;
+
+                // RGB to YUV formula
+                int y = ((66 * r + 129 * g + 25 * b + 128) >> 8) + 16;
+                int u = ((-38 * r - 74 * g + 112 * b + 128) >> 8) + 128;
+                int v = ((112 * r - 94 * g - 18 * b + 128) >> 8) + 128;
+
+                yuv420sp[yIndex++] = (byte) ((y < 0) ? 0 : ((y > 255) ? 255 : y));
+                if (j % 2 == 0 && i % 2 == 0) {
+                    yuv420sp[uvIndex++] = (byte) ((v < 0) ? 0 : ((v > 255) ? 255 : v));
+                    yuv420sp[uvIndex++] = (byte) ((u < 0) ? 0 : ((u > 255) ? 255 : u));
+                }
+            }
         }
     }
 }

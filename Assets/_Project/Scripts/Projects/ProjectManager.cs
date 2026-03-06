@@ -286,6 +286,7 @@ namespace Maptifier.Projects
             _hasUnsavedChanges = false;
 
             EventBus.Publish(new ProjectLoadedEvent(projectId));
+            AnalyticsService.TrackProjectLoaded(projectId);
             return true;
         }
 
@@ -379,6 +380,7 @@ namespace Maptifier.Projects
             _hasUnsavedChanges = false;
 
             LoadProjectInternal(projectId);
+            AnalyticsService.TrackProjectCreated(data.Name);
             return data;
         }
 
@@ -435,7 +437,10 @@ namespace Maptifier.Projects
                 data.Modified = DateTime.UtcNow.ToString("o");
 
                 string json = JsonUtility.ToJson(data, true);
-                File.WriteAllText(Path.Combine(autosaveDir, "project_0.json"), json);
+                var autosavePath = Path.Combine(autosaveDir, "project_0.json");
+                File.WriteAllText(autosavePath, json);
+
+                EventBus.Publish(new ProjectAutoSavedEvent(_currentProjectId, autosavePath));
             }
             catch (Exception ex)
             {

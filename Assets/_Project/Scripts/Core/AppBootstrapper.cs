@@ -70,8 +70,10 @@ namespace Maptifier.Core
 
 #if UNITY_ANDROID && !UNITY_EDITOR
             ServiceLocator.Register<IDisplayService>(new AndroidDisplayService());
+            ServiceLocator.Register<IPermissionService>(new AndroidPermissionService(this));
 #else
             ServiceLocator.Register<IDisplayService>(new EditorDisplayService());
+            ServiceLocator.Register<IPermissionService>(new EditorPermissionService());
 #endif
 
             ServiceLocator.Register<IInputService>(new InputService());

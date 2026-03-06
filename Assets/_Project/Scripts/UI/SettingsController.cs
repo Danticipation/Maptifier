@@ -37,6 +37,11 @@ namespace Maptifier.UI
         private Label _versionLabel;
         private Button _licensesBtn;
         private Button _feedbackBtn;
+        private Toggle _analyticsToggle;
+        private VisualElement _licensesOverlay;
+        private VisualElement _licensesPanel;
+        private ScrollView _licensesScroll;
+        private Button _licensesCloseBtn;
 
         public static SettingsController Instance { get; private set; }
 
@@ -83,6 +88,11 @@ namespace Maptifier.UI
             _versionLabel = root.Q<Label>("version-label");
             _licensesBtn = root.Q<Button>("licenses-btn");
             _feedbackBtn = root.Q<Button>("feedback-btn");
+            _analyticsToggle = root.Q<Toggle>("analytics-toggle");
+            _licensesOverlay = root.Q<VisualElement>("licenses-overlay");
+            _licensesPanel = root.Q<VisualElement>("licenses-panel");
+            _licensesScroll = root.Q<ScrollView>("licenses-scroll");
+            _licensesCloseBtn = root.Q<Button>("licenses-close-btn");
         }
 
         private void LoadFromPlayerPrefs()
@@ -117,6 +127,9 @@ namespace Maptifier.UI
 
             if (_versionLabel != null)
                 _versionLabel.text = $"Version {Application.version}";
+
+            if (_analyticsToggle != null)
+                _analyticsToggle.value = AnalyticsService.HasConsent;
         }
 
         private void WireCallbacks()
@@ -187,8 +200,19 @@ namespace Maptifier.UI
                 });
             }
 
+            if (_analyticsToggle != null)
+            {
+                _analyticsToggle.RegisterValueChangedCallback(evt =>
+                {
+                    AnalyticsService.HasConsent = evt.newValue;
+                });
+            }
+
             if (_licensesBtn != null)
-                _licensesBtn.clicked += () => { /* TODO: Show licenses modal */ };
+                _licensesBtn.clicked += ShowLicenses;
+
+            if (_licensesCloseBtn != null)
+                _licensesCloseBtn.clicked += HideLicenses;
 
             if (_feedbackBtn != null)
                 _feedbackBtn.clicked += () => Application.OpenURL(FeedbackUrl);
@@ -221,6 +245,24 @@ namespace Maptifier.UI
             {
                 _overlay.style.display = DisplayStyle.None;
                 _overlay.style.pointerEvents = PointerEvents.None;
+            }
+        }
+
+        private void ShowLicenses()
+        {
+            if (_licensesOverlay != null)
+            {
+                _licensesOverlay.style.display = DisplayStyle.Flex;
+                _licensesOverlay.style.pointerEvents = PointerEvents.Auto;
+            }
+        }
+
+        private void HideLicenses()
+        {
+            if (_licensesOverlay != null)
+            {
+                _licensesOverlay.style.display = DisplayStyle.None;
+                _licensesOverlay.style.pointerEvents = PointerEvents.None;
             }
         }
     }

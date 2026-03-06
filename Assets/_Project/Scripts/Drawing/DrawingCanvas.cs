@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Maptifier.Core;
 using Maptifier.Input;
+using Maptifier.Layers;
 
 namespace Maptifier.Drawing
 {
@@ -123,12 +124,16 @@ namespace Maptifier.Drawing
         {
             EventBus.Subscribe<ToolChangedEvent>(OnToolChanged);
             EventBus.Subscribe<LayerSelectedEvent>(OnLayerSelected);
+            EventBus.Subscribe<UndoRequestedEvent>(OnUndoRequested);
+            EventBus.Subscribe<RedoRequestedEvent>(OnRedoRequested);
         }
 
         private void UnsubscribeFromEvents()
         {
             EventBus.Unsubscribe<ToolChangedEvent>(OnToolChanged);
             EventBus.Unsubscribe<LayerSelectedEvent>(OnLayerSelected);
+            EventBus.Unsubscribe<UndoRequestedEvent>(OnUndoRequested);
+            EventBus.Unsubscribe<RedoRequestedEvent>(OnRedoRequested);
         }
 
         private void OnToolChanged(ToolChangedEvent evt)
@@ -139,6 +144,28 @@ namespace Maptifier.Drawing
         private void OnLayerSelected(LayerSelectedEvent evt)
         {
             // Could enable/disable drawing based on selected layer
+        }
+
+        private void OnUndoRequested(UndoRequestedEvent evt)
+        {
+            if (!_servicesReady) return;
+            if (ServiceLocator.TryGet<ILayerManager>(out var layerManager))
+            {
+                if (layerManager.ActiveLayerIndex != _layerIndex)
+                    return;
+            }
+            Undo();
+        }
+
+        private void OnRedoRequested(RedoRequestedEvent evt)
+        {
+            if (!_servicesReady) return;
+            if (ServiceLocator.TryGet<ILayerManager>(out var layerManager))
+            {
+                if (layerManager.ActiveLayerIndex != _layerIndex)
+                    return;
+            }
+            Redo();
         }
 
         private void HandleDragStart(Vector2 from, Vector2 to)

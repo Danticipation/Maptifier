@@ -73,6 +73,14 @@ namespace Maptifier.Core
         }
     }
 
+    public readonly struct UndoRequestedEvent
+    {
+    }
+
+    public readonly struct RedoRequestedEvent
+    {
+    }
+
     public readonly struct ProjectSavedEvent
     {
         public readonly string ProjectId;
@@ -82,6 +90,18 @@ namespace Maptifier.Core
         {
             ProjectId = projectId;
             ProjectName = projectName;
+        }
+    }
+
+    public readonly struct ProjectAutoSavedEvent
+    {
+        public readonly string ProjectId;
+        public readonly string FilePath;
+
+        public ProjectAutoSavedEvent(string projectId, string filePath)
+        {
+            ProjectId = projectId;
+            FilePath = filePath;
         }
     }
 

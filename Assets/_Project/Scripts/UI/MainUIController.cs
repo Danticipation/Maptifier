@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Maptifier.Core;
 using Maptifier.Layers;
+using Maptifier.Projects;
 
 namespace Maptifier.UI
 {
@@ -25,6 +26,9 @@ namespace Maptifier.UI
         private VisualElement _displayStatus;
         private Label _displayLabel;
         private Button _settingsBtn;
+        private Button _projectsBtn;
+        private Button _exportScreenshotBtn;
+        private Button _exportVideoBtn;
         private VisualElement _canvasArea;
         private IMGUIContainer _canvasPreview;
         private Slider _crossfadeSlider;
@@ -46,10 +50,25 @@ namespace Maptifier.UI
         private Button _muteB;
         private DropdownField _blendMode;
 
+        private Button _undoBtn;
+        private Button _redoBtn;
+
+        private VisualElement _layerACard;
+        private VisualElement _layerBCard;
+
+        private VisualElement _projectOverlay;
+        private ListView _projectList;
+        private Button _projectCloseBtn;
+        private Button _projectNewBtn;
+        private Button _projectLoadBtn;
+        private Button _projectDeleteBtn;
+
         private ILayerManager _layerManager;
         private ToolType _activeTool = ToolType.Select;
         private bool _drawerOpen;
         private Coroutine _toastCoroutine;
+
+        private ExportService _exportService;
 
         private const string ActiveClass = "maptifier-toolbar__button--active";
         private const string DrawerOpenClass = "maptifier-drawer--open";
@@ -108,6 +127,8 @@ namespace Maptifier.UI
         {
             if (ServiceLocator.TryGet<ILayerManager>(out _layerManager))
                 SyncFromLayerManager();
+            if (_exportService == null)
+                _exportService = new ExportService();
             WireAll();
             SubscribeToEvents();
         }
@@ -120,6 +141,9 @@ namespace Maptifier.UI
             _displayStatus = _root.Q<VisualElement>("display-status");
             _displayLabel = _root.Q<Label>("display-label");
             _settingsBtn = _root.Q<Button>("settings-btn");
+            _projectsBtn = _root.Q<Button>("projects-btn");
+            _exportScreenshotBtn = _root.Q<Button>("export-screenshot-btn");
+            _exportVideoBtn = _root.Q<Button>("export-video-btn");
             _canvasArea = _root.Q<VisualElement>("canvas-area");
             _canvasPreview = _root.Q<IMGUIContainer>("canvas-preview");
             _crossfadeSlider = _root.Q<Slider>("crossfade-slider");
@@ -140,6 +164,10 @@ namespace Maptifier.UI
             _soloB = _root.Q<Button>("solo-b");
             _muteB = _root.Q<Button>("mute-b");
             _blendMode = _root.Q<DropdownField>("blend-mode");
+            _undoBtn = _root.Q<Button>("undo-btn");
+            _redoBtn = _root.Q<Button>("redo-btn");
+            _layerACard = _root.Q<VisualElement>("layer-a-card");
+            _layerBCard = _root.Q<VisualElement>("layer-b-card");
         }
 
         private void WireAll()
@@ -150,6 +178,9 @@ namespace Maptifier.UI
             WireBlendMode();
             WireLayerControls();
             WireSettings();
+            WireExport();
+            WireProjects();
+            WireUndoRedo();
         }
 
         private void WireToolbar()
@@ -310,6 +341,15 @@ namespace Maptifier.UI
                 _soloB.clicked += () => { var next = !(_layerManager.LayerB?.IsSolo ?? false); _layerManager.SetLayerSolo(1, next); UpdateSoloMuteStyle(_soloB, next); };
             if (_muteB != null)
                 _muteB.clicked += () => { var next = !(_layerManager.LayerB?.IsMuted ?? false); _layerManager.SetLayerMute(1, next); UpdateSoloMuteStyle(_muteB, next); };
+
+            if (_layerACard != null)
+            {
+                _layerACard.RegisterCallback<ClickEvent>(_ => SelectLayer(0));
+            }
+            if (_layerBCard != null)
+            {
+                _layerBCard.RegisterCallback<ClickEvent>(_ => SelectLayer(1));
+            }
         }
 
         private void UpdateSoloMuteStyle(Button btn, bool active)
@@ -327,16 +367,47 @@ namespace Maptifier.UI
                 _settingsBtn.clicked += () => SettingsController.Instance?.Show();
         }
 
+        private void WireExport()
+        {
+            if (_exportScreenshotBtn != null)
+                _exportScreenshotBtn.clicked += OnExportScreenshotClicked;
+            if (_exportVideoBtn != null)
+                _exportVideoBtn.clicked += OnExportVideoClicked;
+        }
+
+        private void WireProjects()
+        {
+            if (_projectsBtn == null || _root == null)
+                return;
+
+            EnsureProjectOverlay();
+            _projectsBtn.clicked += () =>
+            {
+                RefreshProjectList();
+                ShowProjectOverlay();
+            };
+        }
+
+        private void WireUndoRedo()
+        {
+            if (_undoBtn != null)
+                _undoBtn.clicked += () => EventBus.Publish(new UndoRequestedEvent());
+            if (_redoBtn != null)
+                _redoBtn.clicked += () => EventBus.Publish(new RedoRequestedEvent());
+        }
+
         private void SubscribeToEvents()
         {
             EventBus.Subscribe<DisplayConnectedEvent>(OnDisplayConnected);
             EventBus.Subscribe<DisplayDisconnectedEvent>(OnDisplayDisconnected);
+            EventBus.Subscribe<ProjectAutoSavedEvent>(OnProjectAutoSaved);
         }
 
         private void UnsubscribeFromEvents()
         {
             EventBus.Unsubscribe<DisplayConnectedEvent>(OnDisplayConnected);
             EventBus.Unsubscribe<DisplayDisconnectedEvent>(OnDisplayDisconnected);
+            EventBus.Unsubscribe<ProjectAutoSavedEvent>(OnProjectAutoSaved);
         }
 
         private void OnDisplayConnected(DisplayConnectedEvent evt)
@@ -348,6 +419,7 @@ namespace Maptifier.UI
             }
             if (_displayLabel != null)
                 _displayLabel.text = $"{evt.Resolution.x}×{evt.Resolution.y}";
+            AnalyticsService.TrackDisplayConnected($"{evt.Resolution.x}x{evt.Resolution.y}");
         }
 
         private void OnDisplayDisconnected(DisplayDisconnectedEvent evt)
@@ -359,6 +431,11 @@ namespace Maptifier.UI
             }
             if (_displayLabel != null)
                 _displayLabel.text = "No Display";
+        }
+
+        private void OnProjectAutoSaved(ProjectAutoSavedEvent evt)
+        {
+            ShowToast("Project autosaved.");
         }
 
         private void SyncFromLayerManager()
@@ -387,6 +464,245 @@ namespace Maptifier.UI
             yield return new WaitForSeconds(duration);
             _toast?.RemoveFromClassList(ToastVisibleClass);
             _toastCoroutine = null;
+        }
+
+        private void OnExportScreenshotClicked()
+        {
+            if (_exportService == null)
+                _exportService = new ExportService();
+
+            if (!ServiceLocator.TryGet<CompositeRenderer>(out var composite) || composite.CompositeRT == null)
+            {
+                ShowToast("Unable to export: no composite frame.");
+                return;
+            }
+
+            _exportService.ExportScreenshot(composite.CompositeRT, path =>
+            {
+                if (string.IsNullOrEmpty(path))
+                    ShowToast("Screenshot export failed or was cancelled.");
+                else
+                    ShowToast("Screenshot exported to gallery.");
+            });
+        }
+
+        private void OnExportVideoClicked()
+        {
+            if (_exportService == null)
+                _exportService = new ExportService();
+
+            if (!ServiceLocator.TryGet<CompositeRenderer>(out var composite) || composite.CompositeRT == null)
+            {
+                ShowToast("Unable to export: no composite frame.");
+                return;
+            }
+
+            const float durationSeconds = 10f;
+            const int fps = 30;
+
+            ShowToast("Starting video export...");
+            StartCoroutine(_exportService.ExportVideo(
+                composite.CompositeRT,
+                durationSeconds,
+                fps,
+                _ => { },
+                path =>
+                {
+                    if (string.IsNullOrEmpty(path))
+                        ShowToast("Video export failed or was cancelled.");
+                    else
+                        ShowToast("Video exported to gallery.");
+                },
+                () => false));
+        }
+
+        private void EnsureProjectOverlay()
+        {
+            if (_projectOverlay != null || _root == null)
+                return;
+
+            _projectOverlay = new VisualElement
+            {
+                name = "project-overlay"
+            };
+            _projectOverlay.AddToClassList("maptifier-settings-overlay");
+            _projectOverlay.style.display = DisplayStyle.None;
+            _projectOverlay.style.pointerEvents = PointerEvents.None;
+
+            var panel = new VisualElement { name = "project-panel" };
+            panel.AddToClassList("maptifier-settings-panel");
+
+            var header = new VisualElement();
+            header.AddToClassList("maptifier-settings-header");
+            header.style.flexDirection = FlexDirection.Row;
+            header.style.justifyContent = Justify.SpaceBetween;
+            header.style.alignItems = Align.Center;
+            header.style.paddingLeft = 16;
+            header.style.paddingRight = 16;
+            header.style.paddingTop = 16;
+            header.style.paddingBottom = 16;
+
+            var title = new Label("Projects");
+            title.AddToClassList("maptifier-label");
+            header.Add(title);
+
+            _projectCloseBtn = new Button { text = "✕", name = "project-close-btn" };
+            _projectCloseBtn.AddToClassList("maptifier-toolbar__button");
+            _projectCloseBtn.style.width = 40;
+            _projectCloseBtn.style.height = 40;
+            header.Add(_projectCloseBtn);
+
+            panel.Add(header);
+
+            _projectList = new ListView
+            {
+                name = "project-list",
+                selectionType = SelectionType.Single
+            };
+            _projectList.style.flexGrow = 1;
+            panel.Add(_projectList);
+
+            var footer = new VisualElement();
+            footer.style.flexDirection = FlexDirection.Row;
+            footer.style.justifyContent = Justify.SpaceBetween;
+            footer.style.paddingLeft = 16;
+            footer.style.paddingRight = 16;
+            footer.style.paddingTop = 12;
+            footer.style.paddingBottom = 16;
+
+            _projectNewBtn = new Button { text = "New", name = "project-new-btn" };
+            _projectLoadBtn = new Button { text = "Load", name = "project-load-btn" };
+            _projectDeleteBtn = new Button { text = "Delete", name = "project-delete-btn" };
+
+            _projectNewBtn.AddToClassList("maptifier-button");
+            _projectLoadBtn.AddToClassList("maptifier-button");
+            _projectDeleteBtn.AddToClassList("maptifier-button");
+
+            footer.Add(_projectNewBtn);
+            footer.Add(_projectLoadBtn);
+            footer.Add(_projectDeleteBtn);
+
+            panel.Add(footer);
+
+            _projectOverlay.Add(panel);
+            _root.Add(_projectOverlay);
+
+            _projectCloseBtn.clicked += HideProjectOverlay;
+            _projectNewBtn.clicked += OnProjectNewClicked;
+            _projectLoadBtn.clicked += OnProjectLoadClicked;
+            _projectDeleteBtn.clicked += OnProjectDeleteClicked;
+        }
+
+        private void ShowProjectOverlay()
+        {
+            if (_projectOverlay == null) return;
+            _projectOverlay.style.display = DisplayStyle.Flex;
+            _projectOverlay.style.pointerEvents = PointerEvents.Auto;
+        }
+
+        private void HideProjectOverlay()
+        {
+            if (_projectOverlay == null) return;
+            _projectOverlay.style.display = DisplayStyle.None;
+            _projectOverlay.style.pointerEvents = PointerEvents.None;
+        }
+
+        private void RefreshProjectList()
+        {
+            if (_projectList == null) return;
+
+            if (!ServiceLocator.TryGet<IProjectManager>(out var projectManager))
+            {
+                _projectList.itemsSource = null;
+                return;
+            }
+
+            var projects = projectManager.ListProjects();
+            _projectList.itemsSource = projects;
+            _projectList.makeItem = () => new Label();
+            _projectList.bindItem = (element, i) =>
+            {
+                if (element is Label label && i >= 0 && i < projects.Count)
+                {
+                    var p = projects[i];
+                    label.text = string.IsNullOrEmpty(p.Name) ? p.Id : p.Name;
+                }
+            };
+        }
+
+        private void OnProjectNewClicked()
+        {
+            if (!ServiceLocator.TryGet<IProjectManager>(out var projectManager))
+            {
+                ShowToast("Project service not available.");
+                return;
+            }
+
+            projectManager.CreateNewProject("Untitled");
+            ShowToast("New project created.");
+            RefreshProjectList();
+        }
+
+        private void OnProjectLoadClicked()
+        {
+            if (_projectList?.itemsSource == null) return;
+            if (!ServiceLocator.TryGet<IProjectManager>(out var projectManager))
+            {
+                ShowToast("Project service not available.");
+                return;
+            }
+
+            var index = _projectList.selectedIndex;
+            if (index < 0 || index >= _projectList.itemsSource.Count) return;
+
+            var projects = (System.Collections.Generic.List<ProjectMetadata>)_projectList.itemsSource;
+            var selected = projects[index];
+
+            if (projectManager.HasUnsavedChanges && !string.IsNullOrEmpty(projectManager.CurrentProjectId))
+            {
+                projectManager.SaveProject(projectManager.CurrentProjectName ?? "Untitled");
+                ShowToast("Current project auto-saved.");
+            }
+
+            projectManager.LoadProject(selected.Id, success =>
+            {
+                if (success)
+                {
+                    ShowToast($"Loaded project \"{selected.Name}\".");
+                    HideProjectOverlay();
+                }
+                else
+                {
+                    ShowToast("Failed to load project.");
+                }
+            });
+        }
+
+        private void OnProjectDeleteClicked()
+        {
+            if (_projectList?.itemsSource == null) return;
+            if (!ServiceLocator.TryGet<IProjectManager>(out var projectManager))
+            {
+                ShowToast("Project service not available.");
+                return;
+            }
+
+            var index = _projectList.selectedIndex;
+            if (index < 0 || index >= _projectList.itemsSource.Count) return;
+
+            var projects = (System.Collections.Generic.List<ProjectMetadata>)_projectList.itemsSource;
+            var selected = projects[index];
+
+            projectManager.DeleteProject(selected.Id);
+            ShowToast("Project deleted.");
+            RefreshProjectList();
+        }
+
+        private void SelectLayer(int index)
+        {
+            if (_layerManager == null) return;
+            _layerManager.ActiveLayerIndex = index;
+            EventBus.Publish(new LayerSelectedEvent(index));
         }
     }
 }

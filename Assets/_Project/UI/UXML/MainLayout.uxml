@@ -5,8 +5,17 @@
             <ui:Label text="Maptifier" class="maptifier-label" style="font-size: 18px; -unity-font-style: bold;" />
             <ui:VisualElement style="flex-grow: 1;" />
             <ui:VisualElement class="maptifier-status-dot maptifier-status-dot--disconnected" name="display-status" />
-            <ui:Label text="No Display" name="display-label" class="maptifier-label--secondary" style="margin-left: 8px;" />
-            <ui:Button name="settings-btn" class="maptifier-toolbar__button" style="width: 40px; height: 40px; margin-left: 12px;">
+            <ui:Label text="No Display" name="display-label" class="maptifier-label--secondary" style="margin-left: 8px; margin-right: 8px;" />
+            <ui:Button name="projects-btn" class="maptifier-toolbar__button" style="width: 40px; height: 40px; margin-right: 4px;">
+                <ui:Label text="📂" style="font-size: 18px;" />
+            </ui:Button>
+            <ui:Button name="export-screenshot-btn" class="maptifier-toolbar__button" style="width: 40px; height: 40px; margin-right: 4px;">
+                <ui:Label text="📸" style="font-size: 18px;" />
+            </ui:Button>
+            <ui:Button name="export-video-btn" class="maptifier-toolbar__button" style="width: 40px; height: 40px; margin-right: 8px;">
+                <ui:Label text="▶" style="font-size: 18px;" />
+            </ui:Button>
+            <ui:Button name="settings-btn" class="maptifier-toolbar__button" style="width: 40px; height: 40px; margin-left: 4px;">
                 <ui:Label text="⚙" style="font-size: 20px;" />
             </ui:Button>
         </ui:VisualElement>
@@ -42,6 +51,12 @@
             </ui:Button>
             <ui:Button name="tool-effects" class="maptifier-toolbar__button">
                 <ui:Label text="✧" class="maptifier-toolbar__icon" />
+            </ui:Button>
+            <ui:Button name="undo-btn" class="maptifier-toolbar__button">
+                <ui:Label text="⟲" class="maptifier-toolbar__icon" />
+            </ui:Button>
+            <ui:Button name="redo-btn" class="maptifier-toolbar__button">
+                <ui:Label text="⟳" class="maptifier-toolbar__icon" />
             </ui:Button>
         </ui:VisualElement>
         

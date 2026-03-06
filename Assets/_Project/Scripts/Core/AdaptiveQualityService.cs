@@ -1,31 +1,30 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Maptifier.Core
 {
     public class AdaptiveQualityService : IAdaptiveQuality
     {
         private const string PerformanceModeKey = "Maptifier_PerformanceMode";
-        private const float OverBudgetThresholdMs = 14f;
-        private const float UnderBudgetThresholdMs = 10f;
-        private const int OverBudgetFramesToStepDown = 10;
-        private const int UnderBudgetFramesToStepUp = 30;
+        private const float OverBudgetThresholdMs = 14f; // ~70 FPS target (to stay safely above 60)
+        private const float UnderBudgetThresholdMs = 10f; // ~100 FPS potential
+        private const int OverBudgetFramesToStepDown = 15;
+        private const int UnderBudgetFramesToStepUp = 60;
 
         private PerformanceTier _currentTier = PerformanceTier.Quality;
         private bool _performanceMode;
         private int _overBudgetCount;
         private int _underBudgetCount;
 
+        // Smoothing for RT scale changes
+        private float _targetRTScale = 1.0f;
+        private float _currentRTScale = 1.0f;
+
         public PerformanceTier CurrentTier => _currentTier;
 
         public bool IsPerformanceMode => _performanceMode;
 
-        public float RTScaleFactor => _currentTier switch
-        {
-            PerformanceTier.Quality => 1.0f,
-            PerformanceTier.Balanced => 0.75f,
-            PerformanceTier.Performance => 0.5f,
-            _ => 1.0f
-        };
+        public float RTScaleFactor => _currentRTScale;
 
         public int MaxEffectsForCurrentTier => _currentTier switch
         {
@@ -41,6 +40,8 @@ namespace Maptifier.Core
             if (_performanceMode)
             {
                 _currentTier = PerformanceTier.Balanced;
+                _targetRTScale = 0.75f;
+                _currentRTScale = 0.75f;
             }
         }
 
@@ -64,6 +65,12 @@ namespace Maptifier.Core
 
         public void UpdateFrameTiming(float frameTimeMs)
         {
+            // Update smoothed RT scale factor
+            if (Mathf.Abs(_currentRTScale - _targetRTScale) > 0.01f)
+            {
+                _currentRTScale = Mathf.Lerp(_currentRTScale, _targetRTScale, Time.deltaTime * 2.0f);
+            }
+
             if (_performanceMode)
             {
                 _overBudgetCount = 0;
@@ -135,7 +142,37 @@ namespace Maptifier.Core
             if (_currentTier == tier) return;
 
             _currentTier = tier;
+            _targetRTScale = tier switch
+            {
+                PerformanceTier.Quality => 1.0f,
+                PerformanceTier.Balanced => 0.75f,
+                PerformanceTier.Performance => 0.5f,
+                _ => 1.0f
+            };
+
+            // Limit active effects if we step down
+            if (ServiceLocator.TryGet<ILayerManager>(out var layerManager))
+            {
+                EnforceEffectLimits(layerManager.LayerA);
+                EnforceEffectLimits(layerManager.LayerB);
+            }
+
             EventBus.Publish(new PerformanceTierChangedEvent(tier));
+            Debug.Log($"[AdaptiveQuality] Switched to {tier} tier (Target Scale: {_targetRTScale})");
+        }
+
+        private void EnforceEffectLimits(Layers.Layer layer)
+        {
+            if (layer == null) return;
+            int limit = MaxEffectsForCurrentTier;
+            if (layer.Effects.Count > limit)
+            {
+                // Disable effects beyond the limit rather than removing them to preserve user settings
+                for (int i = limit; i < layer.Effects.Count; i++)
+                {
+                    layer.Effects[i].IsEnabled = false;
+                }
+            }
         }
     }
 }

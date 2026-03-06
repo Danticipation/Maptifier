@@ -1,63 +1,74 @@
-# Maptifier
+# 🌌 Maptifier
 
-**Android-first projection mapping** — warp, mask, and blend images, video, SVG logos, and live text onto real-world surfaces via USB-C display output.
+**Professional Projection Mapping. In Your Pocket.**
+
+Maptifier is a high-performance, Android-first projection mapping suite that turns your smartphone into a powerful media server. Warp, mask, and blend high-resolution content onto real-world surfaces with zero-latency output via USB-C.
 
 ![Maptifier](Maptifier-1.png)
 
-## Features
+---
 
-- **Multi-source layers** — Images, video, **SVG vector logos**, and **dynamic text** as mappable content
-- **Dual-layer mixing** — Two layers (A/B) with crossfade and blend modes (Normal, Additive, Multiply, Screen, Overlay, Difference)
-- **Warping** — Four-corner projective warp or mesh grid for complex surfaces
-- **Masking** — Brush-based masks with polygon support
-- **Drawing** — On-canvas drawing overlay per layer
-- **Effects** — Blur, Chromatic Aberration, Color Cycle, Edge Glow, Kaleidoscope, Pixelate, Tunnel, Wave Distortion
-- **External display** — Output to projector or second screen via USB-C
-- **Project save/load** — Persist projects with media, warp, mask, and effect settings
+## 🚀 Why Maptifier?
 
-## Requirements
+Projection mapping has traditionally required bulky laptops and expensive software. **Maptifier is the first professional-grade solution built from the ground up for Android.** 
 
-- **Unity 6** (or Unity 2022 LTS+)
-- **Android** — Target SDK 34, Minimum SDK 29
-- **Device** — USB-C display output support (MHL/DisplayPort Alt Mode)
+By leveraging native Android hardware acceleration (`MediaCodec`) and a custom GPU-driven rendering pipeline, Maptifier delivers features previously reserved for desktop workstations:
 
-## Project Structure
+- **Ultra-Portable**: Arrive at your gig with just a phone and a USB-C projector.
+- **Low Latency**: Direct hardware-to-display output with optimized render-to-texture pipelines.
+- **Unified Media**: Seamlessly blend 4K video, SVG vector logos, and dynamic live text.
 
-```
-Assets/_Project/
-├── Scripts/
-│   ├── Core/          # AppBootstrapper, ServiceLocator, EventBus
-│   ├── Display/       # AndroidDisplayService, EditorDisplayService
-│   ├── Layers/        # LayerManager, Layer compositing
-│   ├── Media/         # ImageSource, VideoSource, VectorSource, TextSource
-│   ├── Warping/       # WarpService, WarpMeshRenderer
-│   ├── Masking/       # MaskService, EarClipTriangulator
-│   ├── Drawing/       # DrawingService, DrawingCanvas
-│   ├── Effects/       # EffectPipeline, Blur, Kaleidoscope, etc.
-│   ├── Projects/      # ProjectManager, ExportService
-│   └── UI/            # MainUIController, TextEditorPanel, Settings
-├── Shaders/           # Compositing, Warp, Effects, Masking
-└── UI/                # UXML layouts, USS theme
-```
+---
 
-## Getting Started
+## ✨ Pro Features
 
-1. Clone the repository
-2. Open the project in Unity 6
-3. Build for Android (File → Build Settings → Android)
-4. Deploy to a device with USB-C display support
-5. Connect a projector or external monitor via USB-C
+### 📐 Advanced Geometry
+- **Dual-Mode Warping**: Choose between **Four-Corner Projective Warp** for flat surfaces or a **Custom Mesh Grid** with Catmull-Rom interpolation for curved objects.
+- **Precision Masking**: Brush-based masks and polygon triangulation for isolating complex architectural details.
+- **On-Canvas Drawing**: Annotate or draw custom light-overlays directly on top of your projection layers in real-time.
 
-## Architecture
+### 🎭 Multi-Source Mixing
+- **A/B Dual-Layer Engine**: Professional crossfader with cinematic blend modes: *Normal, Additive, Multiply, Screen, Overlay, and Difference.*
+- **SVG Vector Support**: Unlike raster-only tools, Maptifier renders SVG logos at native resolution, ensuring crisp edges at any projection size.
+- **Live Text Rendering**: Update projection content on the fly for events and presentations.
 
-- **ServiceLocator** — Single DI container; all services register and resolve via interfaces
-- **EventBus** — ScriptableObject-based events for decoupling (e.g. `DisplayConnectedEvent`, `ToolChangedEvent`)
-- **IMediaSource** — Unified interface for image, video, vector (SVG), and text sources; all feed `RenderTexture` into the layer pipeline
+### 🌪️ Real-time FX Pipeline
+A stackable, high-performance effect chain including:
+- **Distortion**: Kaleidoscope, Tunnel, Wave Distortion.
+- **Stylization**: Pixelate, Chromatic Aberration, Edge Glow.
+- **Movement**: Color Cycle, Blur, and more.
 
-## License
+---
 
-See [LICENSE](LICENSE) for details.
+## 🛠️ The Tech Stack
 
-## Feedback
+Maptifier is engineered for stability and performance on the Android ecosystem:
+- **Native Android Encoder**: Custom Java bridge to `MediaCodec` for high-bitrate MP4 exports.
+- **Adaptive Quality Service**: Proactive resolution scaling to maintain a locked **60 FPS** regardless of effect load.
+- **Homogeneous Math**: Robust Ear-Clipping and Bilinear interpolation engines for stable geometry.
+- **Service-Oriented Architecture**: Decoupled `ServiceLocator` and `EventBus` design for modularity.
 
-[Open an issue](https://github.com/Danticipation/Maptifier/issues) or contribute via pull request.
+---
+
+## 🏁 Getting Started
+
+### Requirements
+- **Hardware**: Android device with **USB-C DisplayPort Alt Mode** (e.g., Samsung S-series, Pixel 8, etc.).
+- **Software**: Android 10 (API 29) or higher.
+
+### Installation
+1. Clone this repository.
+2. Open in **Unity 6** (or 2022 LTS).
+3. Build the **Android App Bundle (AAB)** using the provided `RELEASE_CHECKLIST.md`.
+4. Connect your projector via USB-C and launch!
+
+---
+
+## 🤝 Contributing & Feedback
+
+Maptifier is a unique tool in the mobile ecosystem. If you find a bug or have a feature request for a specific projection scenario:
+- 🐛 **Issues**: [Open an issue](https://github.com/Danticipation/Maptifier/issues)
+- 💡 **Discussions**: Reach out via the repository link.
+
+---
+*Created for the next generation of digital artists and guerrilla projectionists.*
