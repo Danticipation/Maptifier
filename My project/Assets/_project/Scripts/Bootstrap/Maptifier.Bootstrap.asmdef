@@ -1,0 +1,25 @@
+{
+    "name": "Maptifier.Bootstrap",
+    "rootNamespace": "Maptifier.Core",
+    "references": [
+        "Maptifier.Core",
+        "Maptifier.Display",
+        "Maptifier.Drawing",
+        "Maptifier.Effects",
+        "Maptifier.Input",
+        "Maptifier.Layers",
+        "Maptifier.Masking",
+        "Maptifier.Media",
+        "Maptifier.Projects",
+        "Maptifier.Warping"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

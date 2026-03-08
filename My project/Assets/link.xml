@@ -1,0 +1,35 @@
+<linker>
+    <!-- Preserve Maptifier project data classes (JSON serialization) -->
+    <assembly fullname="Maptifier.Projects">
+        <type fullname="Maptifier.Projects.ProjectData" preserve="all"/>
+        <type fullname="Maptifier.Projects.LayerData" preserve="all"/>
+        <type fullname="Maptifier.Projects.MediaReferenceData" preserve="all"/>
+        <type fullname="Maptifier.Projects.WarpData" preserve="all"/>
+        <type fullname="Maptifier.Projects.EffectData" preserve="all"/>
+        <type fullname="Maptifier.Projects.EffectParamData" preserve="all"/>
+        <type fullname="Maptifier.Projects.MixerData" preserve="all"/>
+        <type fullname="Maptifier.Projects.ResolutionData" preserve="all"/>
+        <type fullname="Maptifier.Projects.ProjectMetadata" preserve="all"/>
+    </assembly>
+    
+    <!-- Preserve Core event structs -->
+    <assembly fullname="Maptifier.Core">
+        <type fullname="Maptifier.Core.MaptifierEvents/*" preserve="all"/>
+        <type fullname="Maptifier.Core.AppConfig" preserve="all"/>
+    </assembly>
+    
+    <!-- Preserve Masking data structs -->
+    <assembly fullname="Maptifier.Masking">
+        <type fullname="Maptifier.Masking.MaskData" preserve="all"/>
+        <type fullname="Maptifier.Masking.PolygonData" preserve="all"/>
+    </assembly>
+    
+    <!-- Firebase -->
+    <assembly fullname="Firebase.Analytics" preserve="all"/>
+    <assembly fullname="Firebase.Crashlytics" preserve="all"/>
+    
+    <!-- Unity JSON -->
+    <assembly fullname="UnityEngine">
+        <type fullname="UnityEngine.JsonUtility" preserve="all"/>
+    </assembly>
+</linker>
