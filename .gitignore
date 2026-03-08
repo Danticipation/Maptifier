@@ -1,4 +1,4 @@
-# Unity generated
+# Unity generated (root and any subfolder, e.g. "My project/")
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -6,6 +6,11 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Uu]ser[Ss]ettings/
+[Ll]ogs/
 
 # MemoryCaptures
 /[Mm]emoryCaptures/
