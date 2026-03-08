@@ -200,7 +200,7 @@ namespace Maptifier.Media
                 }
             }
 
-            texture.Resize(newWidth, newHeight);
+            texture.Reinitialize(newWidth, newHeight);
             texture.SetPixels(result);
             texture.Apply();
         }

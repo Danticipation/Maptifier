@@ -6,7 +6,6 @@
         "Maptifier.Layers",
         "Maptifier.Masking",
         "Maptifier.Media",
-        "Maptifier.Warping",
         "Maptifier.Effects"
     ],
     "includePlatforms": [],

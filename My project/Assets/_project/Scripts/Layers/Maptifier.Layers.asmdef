@@ -5,7 +5,6 @@
         "Maptifier.Core",
         "Maptifier.Display",
         "Maptifier.Media",
-        "Maptifier.Warping",
         "Maptifier.Masking",
         "Maptifier.Drawing",
         "Maptifier.Effects"

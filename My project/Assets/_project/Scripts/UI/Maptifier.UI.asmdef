@@ -8,7 +8,6 @@
         "Maptifier.Layers",
         "Maptifier.Effects",
         "Maptifier.Drawing",
-        "Maptifier.Warping",
         "Maptifier.Masking",
         "Maptifier.Media",
         "Maptifier.Projects"

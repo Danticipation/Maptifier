@@ -10,8 +10,7 @@
         "Maptifier.Layers",
         "Maptifier.Masking",
         "Maptifier.Media",
-        "Maptifier.Projects",
-        "Maptifier.Warping"
+        "Maptifier.Projects"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
