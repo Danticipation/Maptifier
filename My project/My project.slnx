@@ -1,0 +1,15 @@
+﻿<Solution>
+  <Project Path="Maptifier.Media.csproj" />
+  <Project Path="Maptifier.Input.csproj" />
+  <Project Path="Maptifier.Layers.csproj" />
+  <Project Path="Maptifier.Display.csproj" />
+  <Project Path="Maptifier.Core.csproj" />
+  <Project Path="Maptifier.UI.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="Maptifier.Masking.csproj" />
+  <Project Path="Maptifier.Effects.csproj" />
+  <Project Path="Maptifier.Drawing.csproj" />
+  <Project Path="Maptifier.Warping.csproj" />
+  <Project Path="Maptifier.Projects.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
+</Solution>
