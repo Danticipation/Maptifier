@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.InputSystem.Utilities;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 namespace Maptifier.Input

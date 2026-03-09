@@ -13,9 +13,9 @@ namespace Maptifier.Input
         public readonly Vector2 Delta;
         public readonly float Pressure;
         public readonly float Radius;
-        public readonly TouchPhase Phase;
+        public readonly UnityEngine.InputSystem.TouchPhase Phase;
 
-        public TouchData(int fingerId, Vector2 position, Vector2 delta, float pressure, float radius, TouchPhase phase)
+        public TouchData(int fingerId, Vector2 position, Vector2 delta, float pressure, float radius, UnityEngine.InputSystem.TouchPhase phase)
         {
             FingerId = fingerId;
             Position = position;
