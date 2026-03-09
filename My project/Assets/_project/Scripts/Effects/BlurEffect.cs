@@ -2,10 +2,10 @@ namespace Maptifier.Effects
 {
     public class BlurEffect : BaseEffect
     {
-        public const string Id = "blur";
+        public const string EffectId = "blur";
 
         public override string Name => "Blur";
-        public override string Id => BlurEffect.Id;
+        public override string Id => EffectId;
 
         private const string ShaderName = "Maptifier/FX/DualKawaseBlur";
 

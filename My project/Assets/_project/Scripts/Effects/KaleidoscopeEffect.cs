@@ -2,10 +2,10 @@ namespace Maptifier.Effects
 {
     public class KaleidoscopeEffect : BaseEffect
     {
-        public const string Id = "kaleidoscope";
+        public const string EffectId = "kaleidoscope";
 
         public override string Name => "Kaleidoscope";
-        public override string Id => KaleidoscopeEffect.Id;
+        public override string Id => EffectId;
 
         private const string ShaderName = "Maptifier/FX/Kaleidoscope";
 

@@ -12,14 +12,14 @@ namespace Maptifier.Effects
 
         private static readonly string[] EffectIds =
         {
-            KaleidoscopeEffect.Id,
-            TunnelEffect.Id,
-            ColorCycleEffect.Id,
-            WaveDistortionEffect.Id,
-            PixelateEffect.Id,
-            EdgeGlowEffect.Id,
-            ChromaticAberrationEffect.Id,
-            BlurEffect.Id
+            KaleidoscopeEffect.EffectId,
+            TunnelEffect.EffectId,
+            ColorCycleEffect.EffectId,
+            WaveDistortionEffect.EffectId,
+            PixelateEffect.EffectId,
+            EdgeGlowEffect.EffectId,
+            ChromaticAberrationEffect.EffectId,
+            BlurEffect.EffectId
         };
 
         public EffectPipeline()
@@ -31,14 +31,14 @@ namespace Maptifier.Effects
         {
             return effectId switch
             {
-                KaleidoscopeEffect.Id => new KaleidoscopeEffect(),
-                TunnelEffect.Id => new TunnelEffect(),
-                ColorCycleEffect.Id => new ColorCycleEffect(),
-                WaveDistortionEffect.Id => new WaveDistortionEffect(),
-                PixelateEffect.Id => new PixelateEffect(),
-                EdgeGlowEffect.Id => new EdgeGlowEffect(),
-                ChromaticAberrationEffect.Id => new ChromaticAberrationEffect(),
-                BlurEffect.Id => new BlurEffect(),
+                KaleidoscopeEffect.EffectId => new KaleidoscopeEffect(),
+                TunnelEffect.EffectId => new TunnelEffect(),
+                ColorCycleEffect.EffectId => new ColorCycleEffect(),
+                WaveDistortionEffect.EffectId => new WaveDistortionEffect(),
+                PixelateEffect.EffectId => new PixelateEffect(),
+                EdgeGlowEffect.EffectId => new EdgeGlowEffect(),
+                ChromaticAberrationEffect.EffectId => new ChromaticAberrationEffect(),
+                BlurEffect.EffectId => new BlurEffect(),
                 _ => null
             };
         }

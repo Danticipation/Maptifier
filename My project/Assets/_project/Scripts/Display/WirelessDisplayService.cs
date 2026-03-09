@@ -321,7 +321,7 @@ namespace Maptifier.Display
                     pixels[i] = (c.a << 24) | (c.r << 16) | (c.g << 8) | c.b;
                 }
 
-                Destroy(tex);
+                UnityEngine.Object.Destroy(tex);
                 RenderTexture.active = rt;
 
                 using var configClass = new AndroidJavaClass("android.graphics.Bitmap$Config");

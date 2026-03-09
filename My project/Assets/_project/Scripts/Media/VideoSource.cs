@@ -35,7 +35,7 @@ namespace Maptifier.Media
             UnityEngine.Object.DontDestroyOnLoad(_helperObject);
 
             _videoPlayer = _helperObject.AddComponent<VideoPlayer>();
-            _videoPlayer.source = VideoSourceType.Url;
+            _videoPlayer.source = UnityEngine.Video.VideoSource.Url;
             _videoPlayer.url = path;
             _videoPlayer.playOnAwake = false;
             _videoPlayer.isLooping = false;

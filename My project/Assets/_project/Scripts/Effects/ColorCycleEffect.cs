@@ -2,10 +2,10 @@ namespace Maptifier.Effects
 {
     public class ColorCycleEffect : BaseEffect
     {
-        public const string Id = "colorcycle";
+        public const string EffectId = "colorcycle";
 
         public override string Name => "Color Cycle";
-        public override string Id => ColorCycleEffect.Id;
+        public override string Id => EffectId;
 
         private const string ShaderName = "Maptifier/FX/ColorCycle";
 

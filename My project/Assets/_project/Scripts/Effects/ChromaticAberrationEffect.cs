@@ -2,10 +2,10 @@ namespace Maptifier.Effects
 {
     public class ChromaticAberrationEffect : BaseEffect
     {
-        public const string Id = "chromaticaberration";
+        public const string EffectId = "chromaticaberration";
 
         public override string Name => "Chromatic Aberration";
-        public override string Id => ChromaticAberrationEffect.Id;
+        public override string Id => EffectId;
 
         private const string ShaderName = "Maptifier/FX/ChromaticAberration";
 

@@ -2,10 +2,10 @@ namespace Maptifier.Effects
 {
     public class PixelateEffect : BaseEffect
     {
-        public const string Id = "pixelate";
+        public const string EffectId = "pixelate";
 
         public override string Name => "Pixelate";
-        public override string Id => PixelateEffect.Id;
+        public override string Id => EffectId;
 
         private const string ShaderName = "Maptifier/FX/Pixelate";
 

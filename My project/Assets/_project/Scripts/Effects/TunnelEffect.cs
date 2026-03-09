@@ -2,10 +2,10 @@ namespace Maptifier.Effects
 {
     public class TunnelEffect : BaseEffect
     {
-        public const string Id = "tunnel";
+        public const string EffectId = "tunnel";
 
         public override string Name => "Tunnel";
-        public override string Id => TunnelEffect.Id;
+        public override string Id => EffectId;
 
         private const string ShaderName = "Maptifier/FX/Tunnel";
 

@@ -2,10 +2,10 @@ namespace Maptifier.Effects
 {
     public class EdgeGlowEffect : BaseEffect
     {
-        public const string Id = "edgeglow";
+        public const string EffectId = "edgeglow";
 
         public override string Name => "Edge Glow";
-        public override string Id => EdgeGlowEffect.Id;
+        public override string Id => EffectId;
 
         private const string ShaderName = "Maptifier/FX/EdgeGlow";
 

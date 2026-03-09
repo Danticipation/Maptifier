@@ -2,10 +2,10 @@ namespace Maptifier.Effects
 {
     public class WaveDistortionEffect : BaseEffect
     {
-        public const string Id = "wavedistortion";
+        public const string EffectId = "wavedistortion";
 
         public override string Name => "Wave Distortion";
-        public override string Id => WaveDistortionEffect.Id;
+        public override string Id => EffectId;
 
         private const string ShaderName = "Maptifier/FX/WaveDistortion";
 

@@ -179,7 +179,6 @@ namespace Maptifier.Input
                         }
                     }
                     _lastSingleTouchPos = pos;
-                }
             }
             }
         }
