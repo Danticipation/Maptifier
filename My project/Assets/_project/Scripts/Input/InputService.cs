@@ -145,7 +145,7 @@ namespace Maptifier.Input
             }
             else if (_singleTouchBegan)
             {
-                if (touch.ended || touch.canceled)
+                if (touch.ended || touch.phase == UnityEngine.InputSystem.TouchPhase.Canceled)
                 {
                     var duration = (float)Time.realtimeSinceStartup - _singleTouchStartTime;
                     var movement = Vector2.Distance(pos, _singleTouchStartPos);

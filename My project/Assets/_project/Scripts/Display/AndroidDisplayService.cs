@@ -435,7 +435,7 @@ namespace Maptifier.Display
 
                 bmp.Call("setPixels", pixels);
 
-                UnityEngine.AndroidJavaObject canvas = surf.Call<UnityEngine.AndroidJavaObject>("lockCanvas", null);
+                UnityEngine.AndroidJavaObject canvas = surf.Call<UnityEngine.AndroidJavaObject>("lockCanvas");
                 if (canvas != null)
                 {
                     try
