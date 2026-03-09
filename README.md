@@ -64,6 +64,22 @@ Maptifier is engineered for stability and performance on the Android ecosystem:
 
 ---
 
+## 🔧 Troubleshooting
+
+### Burst: "Failed to resolve assembly: 'Maptifier.Masking'"
+If the Unity Console shows a `Mono.Cecil.AssemblyResolutionException` for `Maptifier.Masking` (or similar project assemblies), Burst is running before those assemblies are available. Two options:
+
+1. **Disable Burst (quick fix)**  
+   In the Unity menu: **Jobs > Burst > Enable Burst Compilation** — uncheck it. The project includes `Assets/Editor/DisableBurstOnLoad.cs`, which can also turn Burst off on load so the editor opens without this error. Re-enable Burst later when the resolution issue is fixed.
+
+2. **Full recompile**  
+   Close Unity, delete the project’s `Library` folder (or at least `Library/ScriptAssemblies`), then reopen the project so all assemblies rebuild. Fix any **red C# errors** in the Console first; Burst can’t resolve assemblies that failed to compile.
+
+### "Internal build system error" / "Read the full binlog without getting a BuildFinishedMessage"
+Usually means the build backend didn’t finish cleanly (e.g. process still running or crash). Try: close Unity, kill any leftover `Unity.exe` or `Unity.Backend.*` processes in Task Manager, then reopen the project. If it persists, clear the `Library` folder and reopen.
+
+---
+
 ## 🤝 Contributing & Feedback
 
 Maptifier is a unique tool in the mobile ecosystem. If you find a bug or have a feature request for a specific projection scenario:
