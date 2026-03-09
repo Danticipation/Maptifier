@@ -222,3 +222,67 @@ Unloading 7295 unused Assets / (4.4 MB). Loaded Objects now: 8065.
 Memory consumption went from 147.7 MB to 143.3 MB.
 Total: 12.119900 ms (FindLiveObjects: 0.760400 ms CreateObjectMapping: 0.560700 ms MarkObjects: 8.478700 ms  DeleteObjects: 2.318900 ms)
 
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 14.70 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 16 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 7241 unused Assets / (4.4 MB). Loaded Objects now: 8065.
+Memory consumption went from 145.0 MB to 140.6 MB.
+Total: 25.124600 ms (FindLiveObjects: 2.106900 ms CreateObjectMapping: 1.928300 ms MarkObjects: 17.951000 ms  DeleteObjects: 3.137200 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 246297.236695 seconds.
+  path: Assets/_project/Scripts/Core/AndroidPermissionService.cs
+  artifactKey: Guid(af337c8e302e53d47a644297c95ad466) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Core/AndroidPermissionService.cs using Guid(af337c8e302e53d47a644297c95ad466) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '52736b6c175a434875a27d1f1ce9d3ff') in 0.1089072 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 15.52 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 16 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 7241 unused Assets / (4.0 MB). Loaded Objects now: 8067.
+Memory consumption went from 145.8 MB to 141.8 MB.
+Total: 16.043300 ms (FindLiveObjects: 1.454900 ms CreateObjectMapping: 0.924100 ms MarkObjects: 9.696500 ms  DeleteObjects: 3.966800 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 535.038819 seconds.
+  path: Assets/_project/Scripts/UI/Maptifier.UI.asmdef
+  artifactKey: Guid(323739df0d04c564ba44eaf2a2677582) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/UI/Maptifier.UI.asmdef using Guid(323739df0d04c564ba44eaf2a2677582) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '01c62499d49a639e8f7106a65771af7a') in 0.0150747 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000014 seconds.
+  path: Assets/_project/Scripts/Core/Warping/IWarpService.cs
+  artifactKey: Guid(5e877fa0af42e9747902508ba7895fe7) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Core/Warping/IWarpService.cs using Guid(5e877fa0af42e9747902508ba7895fe7) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '11488cb6a6806dd4c2ed036975e1669a') in 0.0095575 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000014 seconds.
+  path: Assets/_project/Scripts/Bootstrap/Maptifier.Bootstrap.asmdef
+  artifactKey: Guid(b40f4b3f89e9c0e4f8a59981c5bea1b4) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Bootstrap/Maptifier.Bootstrap.asmdef using Guid(b40f4b3f89e9c0e4f8a59981c5bea1b4) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '71bbf1ed661ef4fbca9c5e72cfb36218') in 0.0111922 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/_project/Scripts/Projects/Maptifier.Projects.asmdef
+  artifactKey: Guid(60377824fce4de14e9e8e8d9ad7bfb88) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Projects/Maptifier.Projects.asmdef using Guid(60377824fce4de14e9e8e8d9ad7bfb88) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '4c63f100750014502871ac52a0ddd446') in 0.0105147 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0

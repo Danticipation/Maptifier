@@ -238,3 +238,75 @@ Received Import Request.
 Start importing Assets/Resources/BillingMode.json using Guid(0b3c4142d52865e4a98798cb616a0650) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '0f2356f5aa7b12b2a68eb6673c396d5a') in 0.017868 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
 
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 15.28 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 16 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 7241 unused Assets / (4.3 MB). Loaded Objects now: 8067.
+Memory consumption went from 145.8 MB to 141.5 MB.
+Total: 25.160400 ms (FindLiveObjects: 1.711600 ms CreateObjectMapping: 1.537400 ms MarkObjects: 18.822500 ms  DeleteObjects: 3.087200 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 2977.782532 seconds.
+  path: Assets/_project/Scripts/Core/GlobalExceptionHandler.cs
+  artifactKey: Guid(b9524ae75f07eb1488fa2f1d21906acf) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Core/GlobalExceptionHandler.cs using Guid(b9524ae75f07eb1488fa2f1d21906acf) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '6f6a4188209fd0bcf1c08484195176d9') in 0.0523111 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/_project/Scripts/Media/ImageSource.cs
+  artifactKey: Guid(162051c360d210e49b58b70cac762753) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Media/ImageSource.cs using Guid(162051c360d210e49b58b70cac762753) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '1bdb8458ee13b5b399d3ce9da26eef20') in 0.0106281 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 15.75 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 16 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 7241 unused Assets / (4.1 MB). Loaded Objects now: 8067.
+Memory consumption went from 145.9 MB to 141.8 MB.
+Total: 16.247600 ms (FindLiveObjects: 1.432000 ms CreateObjectMapping: 0.751600 ms MarkObjects: 9.751400 ms  DeleteObjects: 4.311600 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 535.025201 seconds.
+  path: Assets/_project/Scripts/Core/Warping
+  artifactKey: Guid(cd3050765df3ad745a07134202075756) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Core/Warping using Guid(cd3050765df3ad745a07134202075756) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '3f14c6bf0d25bd0b39a07e0b1a0c7762') in 0.0135341 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000015 seconds.
+  path: Assets/_project/Scripts/Layers/Maptifier.Layers.asmdef
+  artifactKey: Guid(683653d2775c5a94d9e4b7a1514aab72) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Layers/Maptifier.Layers.asmdef using Guid(683653d2775c5a94d9e4b7a1514aab72) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: 'e3aaadb2787d5a077e419880300e96cb') in 0.0095005 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000015 seconds.
+  path: Assets/_project/Scripts/Core/Warping/WarpService.cs
+  artifactKey: Guid(d7e2bf02aeba39644b892b3068117a0c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Core/Warping/WarpService.cs using Guid(d7e2bf02aeba39644b892b3068117a0c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: 'e96320069fad3e0b1e2814a6250a9685') in 0.0103432 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/_project/Scripts/Core/Warping/WarpMeshRenderer.cs
+  artifactKey: Guid(fd64973782386db4fa45425ce3d696e1) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Core/Warping/WarpMeshRenderer.cs using Guid(fd64973782386db4fa45425ce3d696e1) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '9f16019e00b6182040a1b1f695d2cd6f') in 0.0088288 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0
