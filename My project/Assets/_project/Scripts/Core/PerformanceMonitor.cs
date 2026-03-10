@@ -109,7 +109,7 @@ namespace Maptifier.Core
             GpuTimeMs = gpuMs;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-            if (_gcAllocRecorder.Valid && _gcAllocRecorder.Capacity > 0)
+            if (_gcAllocRecorder.Valid && _gcAllocRecorder.Count > 0)
             {
                 var sample = _gcAllocRecorder.GetSample(0);
                 GcAllocKb = sample.Count / 1024f;

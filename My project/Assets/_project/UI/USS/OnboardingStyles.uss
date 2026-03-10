@@ -24,7 +24,7 @@
     -unity-background-scale-mode: scale-to-fit;
     transition-property: scale, rotate;
     transition-duration: 0.6s;
-    transition-timing-function: ease-out-back;
+    transition-timing-function: ease-out;
 }
 
 .maptifier-onboard-page:active .maptifier-onboard-image {

@@ -53,8 +53,25 @@ namespace Maptifier.Layers
         {
             if (_initialized) return;
 
-            _compositeRenderer = ServiceLocator.Get<CompositeRenderer>();
-            _effectPipeline = ServiceLocator.Get<IEffectPipeline>();
+            // Ensure core rendering services exist, even if AppBootstrapper
+            // has not registered them yet (e.g. when running in a minimal scene).
+            if (!ServiceLocator.TryGet<IRenderTexturePool>(out var rtPool) || rtPool == null)
+            {
+                rtPool = new RenderTexturePool();
+                ServiceLocator.Register<IRenderTexturePool>(rtPool);
+            }
+
+            if (!ServiceLocator.TryGet<CompositeRenderer>(out _compositeRenderer) || _compositeRenderer == null)
+            {
+                _compositeRenderer = new CompositeRenderer(rtPool);
+                ServiceLocator.Register<CompositeRenderer>(_compositeRenderer);
+            }
+
+            if (!ServiceLocator.TryGet<IEffectPipeline>(out _effectPipeline) || _effectPipeline == null)
+            {
+                _effectPipeline = new EffectPipeline();
+                ServiceLocator.Register<IEffectPipeline>(_effectPipeline);
+            }
 
             var shader = Shader.Find("Maptifier/LayerComposite");
             if (shader == null)

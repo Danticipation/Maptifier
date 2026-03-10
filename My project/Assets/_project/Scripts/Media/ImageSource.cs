@@ -30,10 +30,11 @@ namespace Maptifier.Media
             _path = path;
             NativeResolution = Vector2Int.zero;
 
-            if (!ServiceLocator.TryGet<ICoroutineRunner>(out var runner))
+            if (!ServiceLocator.TryGet<ICoroutineRunner>(out var runner) || runner == null)
             {
-                Debug.LogError("[ImageSource] ICoroutineRunner not found. Cannot load image asynchronously.");
-                return;
+                // Fallback: create a tiny hidden runner so images still load
+                runner = FallbackCoroutineRunner.Instance;
+                Debug.LogWarning("[ImageSource] ICoroutineRunner not found in ServiceLocator. Using fallback runner instead.");
             }
 
             runner.RunCoroutine(LoadImageCoroutine(path, maxSize));
@@ -321,6 +322,38 @@ namespace Maptifier.Media
                 var bytes = br.ReadBytes(4);
                 if (!little) Array.Reverse(bytes);
                 return BitConverter.ToUInt32(bytes, 0);
+            }
+        }
+
+        /// <summary>
+        /// Fallback coroutine host used when the global ICoroutineRunner service
+        /// is not available (for example, if AppBootstrapper has not registered yet).
+        /// Ensures image loading still works in the Editor.
+        /// </summary>
+        internal sealed class FallbackCoroutineRunner : MonoBehaviour, ICoroutineRunner
+        {
+            private static FallbackCoroutineRunner _instance;
+
+            public static FallbackCoroutineRunner Instance
+            {
+                get
+                {
+                    if (_instance == null)
+                    {
+                        var go = new GameObject("[ImageSourceCoroutineRunner]");
+                        go.hideFlags = HideFlags.HideAndDontSave;
+                        DontDestroyOnLoad(go);
+                        _instance = go.AddComponent<FallbackCoroutineRunner>();
+                    }
+
+                    return _instance;
+                }
+            }
+
+            public void RunCoroutine(IEnumerator coroutine)
+            {
+                if (coroutine != null)
+                    StartCoroutine(coroutine);
             }
         }
     }

@@ -6,6 +6,9 @@
             <ui:VisualElement style="flex-grow: 1;" />
             <ui:VisualElement class="maptifier-status-dot maptifier-status-dot--disconnected" name="display-status" />
             <ui:Label text="No Display" name="display-label" class="maptifier-label--secondary" style="margin-left: 8px; margin-right: 8px;" />
+            <ui:Button name="import-btn" class="maptifier-toolbar__button" style="width: 40px; height: 40px; margin-right: 4px;" tooltip="Add image or video to active layer">
+                <ui:Label text="➕" style="font-size: 18px;" />
+            </ui:Button>
             <ui:Button name="projects-btn" class="maptifier-toolbar__button" style="width: 40px; height: 40px; margin-right: 4px;">
                 <ui:Label text="📂" style="font-size: 18px;" />
             </ui:Button>
@@ -22,11 +25,11 @@
         
         <!-- Canvas Area -->
         <ui:VisualElement class="maptifier-canvas-area" name="canvas-area">
-            <ui:IMGUIContainer name="canvas-preview" style="flex-grow: 1;" />
+            <ui:VisualElement name="canvas-preview" style="flex-grow: 1;" />
         </ui:VisualElement>
         
         <!-- Crossfade Slider -->
-        <ui:VisualElement name="mixer-bar" style="height: 40px; padding: 4px 16px; background-color: var(--maptifier-bg-secondary); flex-direction: row; align-items: center;">
+        <ui:VisualElement name="mixer-bar" style="height: 40px; padding: 4px 16px; background-color: #161B22; flex-direction: row; align-items: center;">
             <ui:Label text="A" class="maptifier-label--secondary" style="margin-right: 8px;" />
             <ui:Slider name="crossfade-slider" low-value="0" high-value="1" value="0.5" class="maptifier-slider" style="flex-grow: 1;" />
             <ui:Label text="B" class="maptifier-label--secondary" style="margin-left: 8px;" />
@@ -62,17 +65,17 @@
         
         <!-- Layer Drawer (right side) -->
         <ui:VisualElement class="maptifier-drawer" name="layer-drawer">
-            <ui:Label text="Layers" class="maptifier-label" style="padding: 16px; font-size: 16px; -unity-font-style: bold; border-bottom-width: 1px; border-bottom-color: var(--maptifier-border);" />
-            <ui:VisualElement name="layer-a-card" style="padding: 12px; margin: 8px; background-color: var(--maptifier-bg-tertiary); border-radius: 8px;">
-                <ui:Label text="Layer A" class="maptifier-label" />
+            <ui:Label text="Layers" class="maptifier-label" style="padding: 16px; font-size: 16px; -unity-font-style: bold; border-bottom-width: 1px; border-bottom-color: #30363D;" />
+            <ui:VisualElement name="layer-a-card" style="padding: 12px; margin: 8px; background-color: #21262D; border-radius: 8px;">
+                <ui:Label text="Layer A" class="maptifier-label" style="font-size: 14px; -unity-font-style: bold; margin-bottom: 6px;" />
                 <ui:Slider name="opacity-a" low-value="0" high-value="1" value="1" class="maptifier-slider" />
                 <ui:VisualElement style="flex-direction: row; margin-top: 8px;">
                     <ui:Button text="S" name="solo-a" class="maptifier-toolbar__button" style="width: 36px; height: 36px; font-size: 12px;" />
                     <ui:Button text="M" name="mute-a" class="maptifier-toolbar__button" style="width: 36px; height: 36px; font-size: 12px; margin-left: 8px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="layer-b-card" style="padding: 12px; margin: 8px; background-color: var(--maptifier-bg-tertiary); border-radius: 8px;">
-                <ui:Label text="Layer B" class="maptifier-label" />
+            <ui:VisualElement name="layer-b-card" style="padding: 12px; margin: 8px; background-color: #21262D; border-radius: 8px;">
+                <ui:Label text="Layer B" class="maptifier-label" style="font-size: 14px; -unity-font-style: bold; margin-bottom: 6px;" />
                 <ui:Slider name="opacity-b" low-value="0" high-value="1" value="1" class="maptifier-slider" />
                 <ui:VisualElement style="flex-direction: row; margin-top: 8px;">
                     <ui:Button text="S" name="solo-b" class="maptifier-toolbar__button" style="width: 36px; height: 36px; font-size: 12px;" />

@@ -50,8 +50,8 @@ namespace Maptifier.UI
             _document = GetComponent<UIDocument>();
             if (_settingsLayout != null)
                 _document.visualTreeAsset = _settingsLayout;
-            if (_theme != null)
-                _document.styleSheets.Add(_theme);
+            if (_theme != null && _document.rootVisualElement != null)
+                _document.rootVisualElement.styleSheets.Add(_theme);
 
             Instance = this;
         }

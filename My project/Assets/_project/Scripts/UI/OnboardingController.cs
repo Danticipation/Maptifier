@@ -75,10 +75,13 @@ namespace Maptifier.UI
         {
             if (_onboardingLayout != null)
                 _document.visualTreeAsset = _onboardingLayout;
-            if (_theme != null)
-                _document.styleSheets.Add(_theme);
-            if (_onboardingStyles != null)
-                _document.styleSheets.Add(_onboardingStyles);
+            if (_document.rootVisualElement != null)
+            {
+                if (_theme != null)
+                    _document.rootVisualElement.styleSheets.Add(_theme);
+                if (_onboardingStyles != null)
+                    _document.rootVisualElement.styleSheets.Add(_onboardingStyles);
+            }
         }
 
         private void Start()

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Maptifier.Core;
 using Maptifier.Layers;
+using Maptifier.Media;
 using Maptifier.Projects;
 
 namespace Maptifier.UI
@@ -25,12 +26,13 @@ namespace Maptifier.UI
         // Cached elements
         private VisualElement _displayStatus;
         private Label _displayLabel;
+        private Button _importBtn;
         private Button _settingsBtn;
         private Button _projectsBtn;
         private Button _exportScreenshotBtn;
         private Button _exportVideoBtn;
         private VisualElement _canvasArea;
-        private IMGUIContainer _canvasPreview;
+        private VisualElement _canvasPreview;
         private Slider _crossfadeSlider;
         private VisualElement _layerDrawer;
         private Label _toast;
@@ -76,7 +78,9 @@ namespace Maptifier.UI
         private const string ConnectedClass = "maptifier-status-dot--connected";
         private const string DisconnectedClass = "maptifier-status-dot--disconnected";
 
-        public IMGUIContainer CanvasPreview => _canvasPreview;
+        public VisualElement CanvasPreview => _canvasPreview;
+
+        private bool _previewDirty;
 
         private void Awake()
         {
@@ -88,13 +92,14 @@ namespace Maptifier.UI
                 currentTree.name.IndexOf("Onboarding", System.StringComparison.OrdinalIgnoreCase) >= 0;
             if (!isOnboarding && _mainLayout != null)
                 _document.visualTreeAsset = _mainLayout;
-            if (_theme != null)
-                _document.styleSheets.Add(_theme);
+            if (_theme != null && _document.rootVisualElement != null)
+                _document.rootVisualElement.styleSheets.Add(_theme);
         }
 
         private void OnEnable()
         {
-            _document.rootVisualElement.RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
+            if (_document?.rootVisualElement != null)
+                _document.rootVisualElement.RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
         }
 
         private void OnDisable()
@@ -129,6 +134,7 @@ namespace Maptifier.UI
                 SyncFromLayerManager();
             if (_exportService == null)
                 _exportService = new ExportService();
+            CacheElements();
             WireAll();
             SubscribeToEvents();
         }
@@ -140,12 +146,13 @@ namespace Maptifier.UI
 
             _displayStatus = _root.Q<VisualElement>("display-status");
             _displayLabel = _root.Q<Label>("display-label");
+            _importBtn = _root.Q<Button>("import-btn");
             _settingsBtn = _root.Q<Button>("settings-btn");
             _projectsBtn = _root.Q<Button>("projects-btn");
             _exportScreenshotBtn = _root.Q<Button>("export-screenshot-btn");
             _exportVideoBtn = _root.Q<Button>("export-video-btn");
             _canvasArea = _root.Q<VisualElement>("canvas-area");
-            _canvasPreview = _root.Q<IMGUIContainer>("canvas-preview");
+            _canvasPreview = _root.Q<VisualElement>("canvas-preview");
             _crossfadeSlider = _root.Q<Slider>("crossfade-slider");
             _layerDrawer = _root.Q<VisualElement>("layer-drawer");
             _toast = _root.Q<Label>("toast");
@@ -178,6 +185,7 @@ namespace Maptifier.UI
             WireBlendMode();
             WireLayerControls();
             WireSettings();
+            WireImport();
             WireExport();
             WireProjects();
             WireUndoRedo();
@@ -233,6 +241,7 @@ namespace Maptifier.UI
             _crossfadeSlider.RegisterValueChangedCallback(evt =>
             {
                 _layerManager.MixValue = evt.newValue;
+                MarkPreviewDirty();
             });
         }
 
@@ -315,7 +324,10 @@ namespace Maptifier.UI
             {
                 var idx = choices.IndexOf(evt.newValue);
                 if (idx >= 0 && idx <= (int)BlendMode.Difference)
+                {
                     _layerManager.CurrentBlendMode = (BlendMode)idx;
+                    MarkPreviewDirty();
+                }
             });
         }
 
@@ -326,21 +338,57 @@ namespace Maptifier.UI
             if (_opacityA != null)
             {
                 _opacityA.value = _layerManager.LayerA?.Opacity ?? 1f;
-                _opacityA.RegisterValueChangedCallback(evt => _layerManager.SetLayerOpacity(0, evt.newValue));
+                _opacityA.RegisterValueChangedCallback(evt =>
+                {
+                    _layerManager.SetLayerOpacity(0, evt.newValue);
+                    MarkPreviewDirty();
+                });
             }
             if (_opacityB != null)
             {
                 _opacityB.value = _layerManager.LayerB?.Opacity ?? 1f;
-                _opacityB.RegisterValueChangedCallback(evt => _layerManager.SetLayerOpacity(1, evt.newValue));
+                _opacityB.RegisterValueChangedCallback(evt =>
+                {
+                    _layerManager.SetLayerOpacity(1, evt.newValue);
+                    MarkPreviewDirty();
+                });
             }
             if (_soloA != null)
-                _soloA.clicked += () => { var next = !(_layerManager.LayerA?.IsSolo ?? false); _layerManager.SetLayerSolo(0, next); UpdateSoloMuteStyle(_soloA, next); };
+                _soloA.clicked += () =>
+                {
+                    var next = !(_layerManager.LayerA?.IsSolo ?? false);
+                    _layerManager.SetLayerSolo(0, next);
+                    UpdateSoloMuteStyle(_soloA, next);
+                    ShowToast(next ? "Layer A: Solo on" : "Layer A: Solo off");
+                    MarkPreviewDirty();
+                };
             if (_muteA != null)
-                _muteA.clicked += () => { var next = !(_layerManager.LayerA?.IsMuted ?? false); _layerManager.SetLayerMute(0, next); UpdateSoloMuteStyle(_muteA, next); };
+                _muteA.clicked += () =>
+                {
+                    var next = !(_layerManager.LayerA?.IsMuted ?? false);
+                    _layerManager.SetLayerMute(0, next);
+                    UpdateSoloMuteStyle(_muteA, next);
+                    ShowToast(next ? "Layer A: Muted" : "Layer A: Unmuted");
+                    MarkPreviewDirty();
+                };
             if (_soloB != null)
-                _soloB.clicked += () => { var next = !(_layerManager.LayerB?.IsSolo ?? false); _layerManager.SetLayerSolo(1, next); UpdateSoloMuteStyle(_soloB, next); };
+                _soloB.clicked += () =>
+                {
+                    var next = !(_layerManager.LayerB?.IsSolo ?? false);
+                    _layerManager.SetLayerSolo(1, next);
+                    UpdateSoloMuteStyle(_soloB, next);
+                    ShowToast(next ? "Layer B: Solo on" : "Layer B: Solo off");
+                    MarkPreviewDirty();
+                };
             if (_muteB != null)
-                _muteB.clicked += () => { var next = !(_layerManager.LayerB?.IsMuted ?? false); _layerManager.SetLayerMute(1, next); UpdateSoloMuteStyle(_muteB, next); };
+                _muteB.clicked += () =>
+                {
+                    var next = !(_layerManager.LayerB?.IsMuted ?? false);
+                    _layerManager.SetLayerMute(1, next);
+                    UpdateSoloMuteStyle(_muteB, next);
+                    ShowToast(next ? "Layer B: Muted" : "Layer B: Unmuted");
+                    MarkPreviewDirty();
+                };
 
             if (_layerACard != null)
             {
@@ -365,6 +413,91 @@ namespace Maptifier.UI
         {
             if (_settingsBtn != null)
                 _settingsBtn.clicked += () => SettingsController.Instance?.Show();
+        }
+
+        private void MarkPreviewDirty()
+        {
+            _previewDirty = true;
+        }
+
+        private void WireImport()
+        {
+            if (_importBtn == null) return;
+            if (!ServiceLocator.TryGet<IMediaImportService>(out var mediaImport))
+                return;
+
+            _importBtn.clicked += () =>
+            {
+                if (_layerManager == null)
+                {
+                    ShowToast("Layer system not ready.");
+                    return;
+                }
+
+                // Ensure layers are initialized before assigning media
+                if (_layerManager.LayerA == null || _layerManager.LayerB == null)
+                {
+                    var width = 1920;
+                    var height = 1080;
+                    if (Screen.width > 0 && Screen.height > 0)
+                    {
+                        width = Mathf.Max(1, Screen.width);
+                        height = Mathf.Max(1, Screen.height);
+                    }
+                    _layerManager.Initialize(width, height);
+                }
+
+                ShowToast("Opening file browser...");
+                mediaImport.ImportFromGallery(
+                    onComplete: source =>
+                    {
+                        if (source == null) return;
+                        var layer = _layerManager.ActiveLayerIndex == 0 ? _layerManager.LayerA : _layerManager.LayerB;
+                        if (layer == null) return;
+
+                        layer.MediaSource?.Dispose();
+                        layer.MediaSource = source;
+
+                        var layerName = _layerManager.ActiveLayerIndex == 0 ? "Layer A" : "Layer B";
+                        var typeName = source.Type == MediaType.Video ? "Video" : source.Type == MediaType.Vector ? "Vector" : "Image";
+                        ShowToast($"{typeName} added to {layerName}.");
+                        MarkPreviewDirty();
+                    },
+                    onError: msg => ShowToast(string.IsNullOrEmpty(msg) ? "Import failed." : msg)
+                );
+            };
+        }
+
+        private Texture2D _previewTexture;
+
+        private void LateUpdate()
+        {
+            if (!_previewDirty || _canvasArea == null || _layerManager == null)
+                return;
+
+            // Render the current frame into the composite render texture
+            _layerManager.RenderFrame();
+            var composite = _layerManager.CompositeOutput;
+            if (composite == null)
+                return;
+
+            // Capture a snapshot from the composite RT into a Texture2D
+            var tex = new Texture2D(composite.width, composite.height, TextureFormat.RGBA32, false);
+            var prev = RenderTexture.active;
+            RenderTexture.active = composite;
+            tex.ReadPixels(new Rect(0, 0, composite.width, composite.height), 0, 0);
+            tex.Apply();
+            RenderTexture.active = prev;
+
+            // Clean up previous preview texture
+            if (_previewTexture != null)
+                UnityEngine.Object.Destroy(_previewTexture);
+            _previewTexture = tex;
+
+            _canvasArea.style.backgroundImage = new StyleBackground(tex);
+            _canvasArea.style.unityBackgroundImageTintColor = Color.white;
+
+            _previewDirty = false;
         }
 
         private void WireExport()
@@ -607,17 +740,27 @@ namespace Maptifier.UI
             _projectOverlay.pickingMode = PickingMode.Ignore;
         }
 
+        private IProjectManager GetOrCreateProjectManager()
+        {
+            if (ServiceLocator.TryGet<IProjectManager>(out var projectManager) && projectManager != null)
+                return projectManager;
+
+            var fallback = new ProjectManager();
+            ServiceLocator.Register<IProjectManager>(fallback);
+            return fallback;
+        }
+
         private void RefreshProjectList()
         {
             if (_projectList == null) return;
 
-            if (!ServiceLocator.TryGet<IProjectManager>(out var projectManager))
+            var projectManager = GetOrCreateProjectManager();
+            var projects = projectManager?.ListProjects();
+            if (projects == null)
             {
                 _projectList.itemsSource = null;
                 return;
             }
-
-            var projects = projectManager.ListProjects();
             _projectList.itemsSource = projects;
             _projectList.makeItem = () => new Label();
             _projectList.bindItem = (element, i) =>
@@ -632,12 +775,7 @@ namespace Maptifier.UI
 
         private void OnProjectNewClicked()
         {
-            if (!ServiceLocator.TryGet<IProjectManager>(out var projectManager))
-            {
-                ShowToast("Project service not available.");
-                return;
-            }
-
+            var projectManager = GetOrCreateProjectManager();
             projectManager.CreateNewProject("Untitled");
             ShowToast("New project created.");
             RefreshProjectList();
@@ -646,12 +784,7 @@ namespace Maptifier.UI
         private void OnProjectLoadClicked()
         {
             if (_projectList?.itemsSource == null) return;
-            if (!ServiceLocator.TryGet<IProjectManager>(out var projectManager))
-            {
-                ShowToast("Project service not available.");
-                return;
-            }
-
+            var projectManager = GetOrCreateProjectManager();
             var index = _projectList.selectedIndex;
             if (index < 0 || index >= _projectList.itemsSource.Count) return;
 
@@ -681,12 +814,7 @@ namespace Maptifier.UI
         private void OnProjectDeleteClicked()
         {
             if (_projectList?.itemsSource == null) return;
-            if (!ServiceLocator.TryGet<IProjectManager>(out var projectManager))
-            {
-                ShowToast("Project service not available.");
-                return;
-            }
-
+            var projectManager = GetOrCreateProjectManager();
             var index = _projectList.selectedIndex;
             if (index < 0 || index >= _projectList.itemsSource.Count) return;
 

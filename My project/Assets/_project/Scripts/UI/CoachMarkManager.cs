@@ -71,7 +71,6 @@ namespace Maptifier.UI
             _tooltipContainer.style.right = 0;
             _tooltipContainer.style.alignItems = Align.Center;
             _tooltipContainer.style.display = DisplayStyle.None;
-            _tooltipContainer.style.zIndex = 100;
 
             var bubble = new VisualElement();
             bubble.style.backgroundColor = new StyleColor(new UnityEngine.Color(0.09f, 0.11f, 0.13f, 0.95f));

@@ -76,7 +76,7 @@
     align-items: center;
     border-top-width: 1px;
     border-top-color: var(--maptifier-border);
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: 0px;
 }
 
 .maptifier-toolbar__button {
@@ -130,7 +130,7 @@
     translate: 320px 0;
     transition-property: translate;
     transition-duration: var(--maptifier-anim-med);
-    transition-timing-function: ease-out-back;
+    transition-timing-function: ease-out;
 }
 
 .maptifier-drawer--open {
