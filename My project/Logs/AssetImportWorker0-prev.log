@@ -1,11 +1,11 @@
 [Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Daniel" at "2026-03-09T13:30:13.2743792Z"
 Built from '6000.3/staging' branch; Version is '6000.3.10f1 (e35f0c77bd8e) revision 14901004'; Using compiler version '194234433'; Build Type 'Release'
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Daniel" at "2026-03-08T06:05:10.6745746Z"
 OS: 'Windows 11  (10.0.26200) Professional' Language: 'en' Physical Memory: 32677 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
 System  architecture: x64
 Process architecture: x64
-Date: 2026-03-08T06:05:10Z
+Date: 2026-03-09T13:30:13Z
 
 COMMAND LINE ARGUMENTS:
 C:\Program Files\Unity\Hub\Editor\6000.3.10f1\Editor\Unity.exe
@@ -19,7 +19,7 @@ C:/My Applications/Maptifier/My project
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-50894
+52594
 -licensingIpc
 LicenseClient-Daniel
 -job-worker-count
@@ -67,12 +67,12 @@ C:/My Applications/Maptifier/My project
     "memorysetup-job-temp-allocator-block-size-background=1048576"
     "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
     "memorysetup-temp-allocator-size-cloud-worker=32768"
-Player connection [30840]  Target information:
+Player connection [35716]  Target information:
 
-Player connection [30840]  * "[IP] 192.168.0.60 [Port] 0 [Flags] 2 [Guid] 2541217836 [EditorId] 2541217836 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-5OTLPSV) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [35716]  * "[IP] 192.168.0.60 [Port] 0 [Flags] 2 [Guid] 1584264545 [EditorId] 1584264545 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-5OTLPSV) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [30840] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [30840] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [35716] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [35716] Host joined alternative multi-casting on [225.0.0.222:34997]...
 JobSystem: Creating JobQueue using job-worker-count value 7
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
@@ -87,21 +87,21 @@ Library Redirect Path: Library/
 [Licensing::Module] Licensing is not yet initialized.
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.17.4+4293ba1
-  Session Id:              fc022d19a419482ab631e7f955d2415f
+  Session Id:              a0059fbe82cd4e828b3ec29bc9d7c6ab
   Correlation Id:          2ec54ec142c558335cfc69a194113759
-  External correlation Id: 7241871352044695669
+  External correlation Id: 8227622097660197538
   Machine Id:              k3atKKquQn6wD9sKMMgoLl8CgUU=
-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-Daniel" (connect: 0.00s, validation: 0.00s, handshake: 2.21s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Daniel-notifications" at "2026-03-08T06:05:12.8811949Z"
-[Licensing::Module] Licensing Background thread has ended after 2.21s
-[Licensing::Module] Licensing is initialized (took 2.02s).
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-Daniel" (connect: 0.00s, validation: 0.00s, handshake: 2.18s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Daniel-notifications" at "2026-03-09T13:30:15.4611114Z"
+[Licensing::Module] Licensing Background thread has ended after 2.19s
+[Licensing::Module] Licensing is initialized (took 1.90s).
 [Licensing::Client] Successfully resolved entitlement details
 [Licensing::Module] License group:
   Id: 1375899427071-UnityPersXXXX
   Product: Unity Personal
   Type: Assigned
   Expiration: Unlimited
-Refreshing native plugins compatible for Editor in 8.32 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 59.40 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 6000.3.10f1 (e35f0c77bd8e)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/Resources/UnitySubsystems
@@ -117,48 +117,48 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56996
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56344
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
-Registered in 0.002392 seconds.
-- Loaded All Assemblies, in  0.378 seconds
+Registered in 0.002564 seconds.
+- Loaded All Assemblies, in  0.935 seconds
 Native extension for Android target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.405 seconds
-Domain Reload Profiling: 781ms
-	BeginReloadAssembly (114ms)
+- Finished resetting the current domain, in  0.449 seconds
+Domain Reload Profiling: 1381ms
+	BeginReloadAssembly (135ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (1ms)
-	RebuildCommonClasses (34ms)
+	RebuildCommonClasses (35ms)
 	RebuildNativeTypeToScriptingClass (12ms)
-	initialDomainReloadingComplete (43ms)
-	LoadAllAssembliesAndSetupDomain (173ms)
-		LoadAssemblies (111ms)
+	initialDomainReloadingComplete (45ms)
+	LoadAllAssembliesAndSetupDomain (705ms)
+		LoadAssemblies (133ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (169ms)
-			TypeCache.Refresh (167ms)
-				TypeCache.ScanAssembly (155ms)
+		AnalyzeDomain (700ms)
+			TypeCache.Refresh (698ms)
+				TypeCache.ScanAssembly (460ms)
 			BuildScriptInfoCaches (0ms)
-			ResolveRequiredComponents (0ms)
-	FinalizeReload (406ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (449ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (359ms)
+		SetupLoadedEditorAssemblies (397ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (73ms)
-			SetLoadedEditorAssemblies (3ms)
-			BeforeProcessingInitializeOnLoad (81ms)
-			ProcessInitializeOnLoadAttributes (137ms)
-			ProcessInitializeOnLoadMethodAttributes (65ms)
+			InitializePlatformSupportModulesInManaged (74ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (88ms)
+			ProcessInitializeOnLoadAttributes (158ms)
+			ProcessInitializeOnLoadMethodAttributes (72ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -169,120 +169,142 @@ Import Worker Mode flag is 0x00
 Begin MonoManager ReloadAssembly
 [Licensing::Client] Successfully resolved entitlement details
 Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  0.799 seconds
-Refreshing native plugins compatible for Editor in 7.03 ms, found 3 plugins.
+- Loaded All Assemblies, in  1.009 seconds
+Refreshing native plugins compatible for Editor in 6.86 ms, found 3 plugins.
 Native extension for Android target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 6.99 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 6.72 ms, found 3 plugins.
 Package Manager log level set to [2]
 [Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
 [Package Manager] Unable to send message (not connected to server process).
 [Package Manager] Cannot connect to Unity Package Manager local server
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.716 seconds
-Domain Reload Profiling: 1510ms
-	BeginReloadAssembly (190ms)
+- Finished resetting the current domain, in  0.792 seconds
+Domain Reload Profiling: 1794ms
+	BeginReloadAssembly (185ms)
 		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (8ms)
+		DisableScriptedObjects (7ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (37ms)
+		CreateAndSetChildDomain (38ms)
 	RebuildCommonClasses (35ms)
 	RebuildNativeTypeToScriptingClass (11ms)
-	initialDomainReloadingComplete (38ms)
-	LoadAllAssembliesAndSetupDomain (520ms)
-		LoadAssemblies (343ms)
+	initialDomainReloadingComplete (50ms)
+	LoadAllAssembliesAndSetupDomain (721ms)
+		LoadAssemblies (543ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (270ms)
-			TypeCache.Refresh (190ms)
-				TypeCache.ScanAssembly (173ms)
-			BuildScriptInfoCaches (67ms)
-			ResolveRequiredComponents (9ms)
-	FinalizeReload (717ms)
+		AnalyzeDomain (273ms)
+			TypeCache.Refresh (191ms)
+				TypeCache.ScanAssembly (171ms)
+			BuildScriptInfoCaches (68ms)
+			ResolveRequiredComponents (10ms)
+	FinalizeReload (792ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (515ms)
+		SetupLoadedEditorAssemblies (589ms)
 			LogAssemblyErrors (0ms)
 			InitializePlatformSupportModulesInManaged (9ms)
-			SetLoadedEditorAssemblies (4ms)
-			BeforeProcessingInitializeOnLoad (135ms)
-			ProcessInitializeOnLoadAttributes (297ms)
-			ProcessInitializeOnLoadMethodAttributes (64ms)
-			AfterProcessingInitializeOnLoad (5ms)
+			SetLoadedEditorAssemblies (3ms)
+			BeforeProcessingInitializeOnLoad (165ms)
+			ProcessInitializeOnLoadAttributes (329ms)
+			ProcessInitializeOnLoadMethodAttributes (76ms)
+			AfterProcessingInitializeOnLoad (6ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (5ms)
+		AwakeInstancesAfterBackupRestoration (6ms)
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
-Refreshing native plugins compatible for Editor in 8.30 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 7.93 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 16 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 7295 unused Assets / (4.4 MB). Loaded Objects now: 8065.
-Memory consumption went from 147.7 MB to 143.3 MB.
-Total: 12.119900 ms (FindLiveObjects: 0.760400 ms CreateObjectMapping: 0.560700 ms MarkObjects: 8.478700 ms  DeleteObjects: 2.318900 ms)
+Unloading 7295 unused Assets / (4.2 MB). Loaded Objects now: 8065.
+Memory consumption went from 152.2 MB to 148.1 MB.
+Total: 11.102800 ms (FindLiveObjects: 0.968200 ms CreateObjectMapping: 0.649300 ms MarkObjects: 6.558000 ms  DeleteObjects: 2.926100 ms)
 
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 14.70 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 16 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 7241 unused Assets / (4.4 MB). Loaded Objects now: 8065.
-Memory consumption went from 145.0 MB to 140.6 MB.
-Total: 25.124600 ms (FindLiveObjects: 2.106900 ms CreateObjectMapping: 1.928300 ms MarkObjects: 17.951000 ms  DeleteObjects: 3.137200 ms)
-
-Prepare: number of updated asset objects reloaded= 0
 ========================================================================
 Received Import Request.
-  Time since last request: 246297.236695 seconds.
-  path: Assets/_project/Scripts/Core/AndroidPermissionService.cs
-  artifactKey: Guid(af337c8e302e53d47a644297c95ad466) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/_project/Scripts/Core/AndroidPermissionService.cs using Guid(af337c8e302e53d47a644297c95ad466) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '52736b6c175a434875a27d1f1ce9d3ff') in 0.1089072 seconds
+  Time since last request: 356424.364936 seconds.
+  path: Assets/_project/Scripts/Input/InputService.cs
+  artifactKey: Guid(fe97c0a1c9320564ca6f42c871cbf6ad) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Input/InputService.cs using Guid(fe97c0a1c9320564ca6f42c871cbf6ad) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '620994cc2172e30d0f9fa6e5eccc33d2') in 0.0794349 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/_project/Scripts/Effects/KaleidoscopeEffect.cs
+  artifactKey: Guid(7183b98c37b90c74a83dbf20e8033ff8) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Effects/KaleidoscopeEffect.cs using Guid(7183b98c37b90c74a83dbf20e8033ff8) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '48d76abdee643bdade8e44e434fad863') in 0.0163404 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/_project/Scripts/Media/VideoSource.cs
+  artifactKey: Guid(ea66e4c7d6c08e64bbe0d329f4d844e1) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Media/VideoSource.cs using Guid(ea66e4c7d6c08e64bbe0d329f4d844e1) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '2de0a4d0df4e47fde7e0b5714bf99adc') in 0.0121906 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
 Received Prepare
-Refreshing native plugins compatible for Editor in 15.52 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 17.05 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 16 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 7241 unused Assets / (4.0 MB). Loaded Objects now: 8067.
-Memory consumption went from 145.8 MB to 141.8 MB.
-Total: 16.043300 ms (FindLiveObjects: 1.454900 ms CreateObjectMapping: 0.924100 ms MarkObjects: 9.696500 ms  DeleteObjects: 3.966800 ms)
+Unloading 7241 unused Assets / (4.1 MB). Loaded Objects now: 8067.
+Memory consumption went from 150.3 MB to 146.2 MB.
+Total: 20.145700 ms (FindLiveObjects: 1.668300 ms CreateObjectMapping: 1.725500 ms MarkObjects: 11.983400 ms  DeleteObjects: 4.766900 ms)
 
 Prepare: number of updated asset objects reloaded= 0
 ========================================================================
 Received Import Request.
-  Time since last request: 535.038819 seconds.
-  path: Assets/_project/Scripts/UI/Maptifier.UI.asmdef
-  artifactKey: Guid(323739df0d04c564ba44eaf2a2677582) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/_project/Scripts/UI/Maptifier.UI.asmdef using Guid(323739df0d04c564ba44eaf2a2677582) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '01c62499d49a639e8f7106a65771af7a') in 0.0150747 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000014 seconds.
-  path: Assets/_project/Scripts/Core/Warping/IWarpService.cs
-  artifactKey: Guid(5e877fa0af42e9747902508ba7895fe7) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/_project/Scripts/Core/Warping/IWarpService.cs using Guid(5e877fa0af42e9747902508ba7895fe7) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '11488cb6a6806dd4c2ed036975e1669a') in 0.0095575 seconds
+  Time since last request: 436.786477 seconds.
+  path: Assets/_project/Scripts/Input/InputService.cs
+  artifactKey: Guid(fe97c0a1c9320564ca6f42c871cbf6ad) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Input/InputService.cs using Guid(fe97c0a1c9320564ca6f42c871cbf6ad) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: 'd809c616ca6cb3e47c2d9aef58ccb0ea') in 0.0114093 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000014 seconds.
-  path: Assets/_project/Scripts/Bootstrap/Maptifier.Bootstrap.asmdef
-  artifactKey: Guid(b40f4b3f89e9c0e4f8a59981c5bea1b4) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/_project/Scripts/Bootstrap/Maptifier.Bootstrap.asmdef using Guid(b40f4b3f89e9c0e4f8a59981c5bea1b4) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '71bbf1ed661ef4fbca9c5e72cfb36218') in 0.0111922 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+  path: Assets/_project/Scripts/Display/WirelessDisplayService.cs
+  artifactKey: Guid(d3003ac453669ed42a098d60b69c6052) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Display/WirelessDisplayService.cs using Guid(d3003ac453669ed42a098d60b69c6052) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '3a109d9bf94117ee0140466ece01fb7e') in 0.0089381 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 15.61 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 16 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 7241 unused Assets / (3.1 MB). Loaded Objects now: 8067.
+Memory consumption went from 150.3 MB to 147.2 MB.
+Total: 18.546400 ms (FindLiveObjects: 1.320200 ms CreateObjectMapping: 1.576500 ms MarkObjects: 11.381700 ms  DeleteObjects: 4.266100 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
 Received Import Request.
-  Time since last request: 0.000016 seconds.
-  path: Assets/_project/Scripts/Projects/Maptifier.Projects.asmdef
-  artifactKey: Guid(60377824fce4de14e9e8e8d9ad7bfb88) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/_project/Scripts/Projects/Maptifier.Projects.asmdef using Guid(60377824fce4de14e9e8e8d9ad7bfb88) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '4c63f100750014502871ac52a0ddd446') in 0.0105147 seconds
+  Time since last request: 863.108808 seconds.
+  path: Assets/_project/Scripts/Display/WirelessDisplayService.cs
+  artifactKey: Guid(d3003ac453669ed42a098d60b69c6052) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/_project/Scripts/Display/WirelessDisplayService.cs using Guid(d3003ac453669ed42a098d60b69c6052) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '7b88a3411707c38e2f58eb833d393a66') in 0.0143015 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 8.21 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 16 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 7242 unused Assets / (4.5 MB). Loaded Objects now: 8068.
+Memory consumption went from 150.3 MB to 145.9 MB.
+Total: 18.484100 ms (FindLiveObjects: 0.958800 ms CreateObjectMapping: 1.071400 ms MarkObjects: 13.640000 ms  DeleteObjects: 2.812400 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 35067.178319 seconds.
+  path: Assets/Editor
+  artifactKey: Guid(1ed6abb384d17704096e35bafd69160d) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Editor using Guid(1ed6abb384d17704096e35bafd69160d) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '024c712e1321e1f3b4b91040eb460d12') in 0.0172218 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
 
-Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
-AssetImportWorker is now disconnected from the server
-Process exiting
-Exiting without the bug reporter. Application will terminate with return code 0
