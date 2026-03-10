@@ -83,7 +83,9 @@ namespace Maptifier.Core
             ServiceLocator.Register<IMaskService>(new MaskService());
             ServiceLocator.Register<IDrawingService>(new DrawingService());
             ServiceLocator.Register<IEffectPipeline>(new EffectPipeline());
-            ServiceLocator.Register<ILayerManager>(new LayerManager());
+            var layerManager = new LayerManager();
+            ServiceLocator.Register<ILayerManager>(layerManager);
+            ServiceLocator.Register<IActiveLayerIndex>(layerManager);
             ServiceLocator.Register<IProjectManager>(new ProjectManager());
             ServiceLocator.Register<IAdaptiveQuality>(new AdaptiveQualityService());
         }

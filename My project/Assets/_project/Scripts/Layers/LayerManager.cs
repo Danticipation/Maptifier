@@ -9,7 +9,7 @@ namespace Maptifier.Layers
     /// Manages two layers (A and B) with mix, blend, opacity, solo, and mute controls.
     /// Renders each layer to its output RT, then composites via CompositeRenderer.
     /// </summary>
-    public class LayerManager : ILayerManager
+    public class LayerManager : ILayerManager, IActiveLayerIndex
     {
         private Layer _layerA;
         private Layer _layerB;

@@ -235,7 +235,7 @@ namespace Maptifier.UI
             if (_overlay != null)
             {
                 _overlay.style.display = DisplayStyle.Flex;
-                _overlay.style.pointerEvents = PointerEvents.Auto;
+                _overlay.pickingMode = PickingMode.Position;
             }
         }
 
@@ -244,7 +244,7 @@ namespace Maptifier.UI
             if (_overlay != null)
             {
                 _overlay.style.display = DisplayStyle.None;
-                _overlay.style.pointerEvents = PointerEvents.None;
+                _overlay.pickingMode = PickingMode.Ignore;
             }
         }
 
@@ -253,7 +253,7 @@ namespace Maptifier.UI
             if (_licensesOverlay != null)
             {
                 _licensesOverlay.style.display = DisplayStyle.Flex;
-                _licensesOverlay.style.pointerEvents = PointerEvents.Auto;
+                _licensesOverlay.pickingMode = PickingMode.Position;
             }
         }
 
@@ -262,7 +262,7 @@ namespace Maptifier.UI
             if (_licensesOverlay != null)
             {
                 _licensesOverlay.style.display = DisplayStyle.None;
-                _licensesOverlay.style.pointerEvents = PointerEvents.None;
+                _licensesOverlay.pickingMode = PickingMode.Ignore;
             }
         }
     }

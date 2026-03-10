@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Maptifier.Core;
 using Maptifier.Input;
-using Maptifier.Layers;
 
 namespace Maptifier.Drawing
 {
@@ -149,7 +148,7 @@ namespace Maptifier.Drawing
         private void OnUndoRequested(UndoRequestedEvent evt)
         {
             if (!_servicesReady) return;
-            if (ServiceLocator.TryGet<ILayerManager>(out var layerManager))
+            if (ServiceLocator.TryGet<IActiveLayerIndex>(out var layerManager))
             {
                 if (layerManager.ActiveLayerIndex != _layerIndex)
                     return;
@@ -160,7 +159,7 @@ namespace Maptifier.Drawing
         private void OnRedoRequested(RedoRequestedEvent evt)
         {
             if (!_servicesReady) return;
-            if (ServiceLocator.TryGet<ILayerManager>(out var layerManager))
+            if (ServiceLocator.TryGet<IActiveLayerIndex>(out var layerManager))
             {
                 if (layerManager.ActiveLayerIndex != _layerIndex)
                     return;

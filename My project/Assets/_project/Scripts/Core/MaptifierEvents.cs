@@ -53,6 +53,12 @@ namespace Maptifier.Core
         }
     }
 
+    /// <summary>Used by Drawing and others to query active layer without referencing Maptifier.Layers.</summary>
+    public interface IActiveLayerIndex
+    {
+        int ActiveLayerIndex { get; }
+    }
+
     public readonly struct LayerSelectedEvent
     {
         public readonly int LayerIndex;

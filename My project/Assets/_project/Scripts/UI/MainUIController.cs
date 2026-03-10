@@ -527,7 +527,7 @@ namespace Maptifier.UI
             };
             _projectOverlay.AddToClassList("maptifier-settings-overlay");
             _projectOverlay.style.display = DisplayStyle.None;
-            _projectOverlay.style.pointerEvents = PointerEvents.None;
+            _projectOverlay.pickingMode = PickingMode.Ignore;
 
             var panel = new VisualElement { name = "project-panel" };
             panel.AddToClassList("maptifier-settings-panel");
@@ -597,14 +597,14 @@ namespace Maptifier.UI
         {
             if (_projectOverlay == null) return;
             _projectOverlay.style.display = DisplayStyle.Flex;
-            _projectOverlay.style.pointerEvents = PointerEvents.Auto;
+            _projectOverlay.pickingMode = PickingMode.Position;
         }
 
         private void HideProjectOverlay()
         {
             if (_projectOverlay == null) return;
             _projectOverlay.style.display = DisplayStyle.None;
-            _projectOverlay.style.pointerEvents = PointerEvents.None;
+            _projectOverlay.pickingMode = PickingMode.Ignore;
         }
 
         private void RefreshProjectList()

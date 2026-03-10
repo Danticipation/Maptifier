@@ -220,9 +220,10 @@ namespace Maptifier.Masking
             Graphics.DrawTexture(
                 new Rect(x, y, sizePx, sizePx),
                 brushTex,
-                mat,
-                0, 0, 1, 1,
-                _brushEraser ? Color.black : Color.white
+                new Rect(0, 0, 1, 1),
+                0, 0, 0, 0,
+                _brushEraser ? Color.black : Color.white,
+                mat
             );
 
             RenderTexture.active = prev;
