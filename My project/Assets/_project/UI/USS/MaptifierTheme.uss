@@ -181,7 +181,6 @@
 
 .maptifier-status-dot--connected {
     background-color: var(--maptifier-success);
-    box-shadow: 0 0 8px var(--maptifier-success);
 }
 
 .maptifier-status-dot--disconnected {
@@ -246,4 +245,14 @@
     font-size: 12px;
     color: var(--maptifier-text-secondary);
     margin-bottom: 12px;
+}
+
+/* Text fields */
+.maptifier-textfield {
+    color: #111111;
+    background-color: #FFFFFF;
+    height: 28px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 4px;
 }

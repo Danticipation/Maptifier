@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Maptifier.Core;
 
 namespace Maptifier.Display
 {
@@ -47,6 +48,19 @@ namespace Maptifier.Display
         public void Initialize()
         {
             Debug.Log("[EditorDisplayService] Initialized (mock)");
+
+            // In the editor, automatically simulate an external display so
+            // the UI status dot and resolution label reflect an active output.
+            // Also publish the same events that a real display would, so
+            // UI controllers update their state without needing DisplayPresenter.
+            SetSimulateConnected(true);
+
+            if (_simulateConnected)
+            {
+                var resolution = ExternalResolution;
+                var refreshRate = ExternalRefreshRate;
+                EventBus.Publish(new DisplayConnectedEvent(ExternalDisplayId, resolution, refreshRate));
+            }
         }
 
         public void PollDisplayState()
@@ -62,6 +76,11 @@ namespace Maptifier.Display
 
         public void Shutdown()
         {
+            if (_simulateConnected)
+            {
+                EventBus.Publish(new DisplayDisconnectedEvent(ExternalDisplayId));
+            }
+
             _simulateConnected = false;
             Debug.Log("[EditorDisplayService] Shutdown (mock)");
         }

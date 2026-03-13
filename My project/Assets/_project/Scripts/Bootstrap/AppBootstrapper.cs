@@ -72,7 +72,9 @@ namespace Maptifier.Core
             ServiceLocator.Register<IDisplayService>(new AndroidDisplayService());
             ServiceLocator.Register<IPermissionService>(new AndroidPermissionService(this));
 #else
-            ServiceLocator.Register<IDisplayService>(new EditorDisplayService());
+            var editorDisplay = new EditorDisplayService();
+            ServiceLocator.Register<IDisplayService>(editorDisplay);
+            editorDisplay.Initialize();
             ServiceLocator.Register<IPermissionService>(new EditorPermissionService());
 #endif
 

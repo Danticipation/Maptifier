@@ -52,15 +52,58 @@ Maptifier is engineered for stability and performance on the Android ecosystem:
 
 ## 🏁 Getting Started
 
-### Requirements
-- **Hardware**: Android device with **USB-C DisplayPort Alt Mode** (e.g., Samsung S-series, Pixel 8, etc.).
+### Current Status (Unity 6)
+
+The project has been updated and verified to run in the **Unity 6 editor** on desktop. You can:
+
+- Import images and videos into **Layer A** and **Layer B**.
+- Crossfade and blend the two layers using the **A/B slider** and **Blend** dropdown.
+- Use the main toolbar tools (Select, Warp, Mask, Draw, Text, Effects) with the in‑editor UI Toolkit layout.
+
+Android builds and external display output are still the primary target, but the quickest way to explore Maptifier today is directly in the editor.
+
+### Run in the Unity Editor
+
+1. **Open the project**
+   - Clone this repository.
+   - Open the folder in **Unity 6**.
+2. **Open the boot scene**
+   - Load the scene that contains the **Bootstrap** GameObject (usually `Assets/_project/Scenes/Boot` or similar).
+3. **Verify the Bootstrap object**
+   - Select **Bootstrap** in the Hierarchy.
+   - In the Inspector:
+     - `App Bootstrapper` should be present (no overrides needed for basic use).
+     - `UI Document` should have:
+       - **Panel Settings**: `MaptifierPanelSettings`
+       - **Source Asset**: `MainLayout` (`Assets/_project/UI/UXML/MainLayout.uxml`)
+     - `Main UI Controller` should reference:
+       - **Main Layout**: `MainLayout`
+       - **Theme**: `MaptifierTheme`
+4. **Press Play**
+   - You should see the Maptifier UI (top bar, large canvas, bottom toolbar, and the right‑side **Layers** drawer).
+5. **Load media into layers**
+   - Open the **Layers** drawer (≡ button in the top bar if it’s hidden).
+   - Click **Layer A** card → click the purple **+** in the top bar → choose an image or video.
+   - Click **Layer B** card → purple **+** again → choose a *different* image or video.
+6. **Mix and blend**
+   - Use the **A–B slider** at the bottom to crossfade between layers.
+   - Use **S** (Solo) and **M** (Mute) buttons on each layer to audition only A or B.
+   - Change **Blend** (Normal, Screen, Multiply, Overlay, Difference) to see different compositing modes.
+
+### Android Build (production target)
+
+When you’re ready to deploy to a device:
+
+- **Hardware**: Android device with **USB-C DisplayPort Alt Mode** (e.g., Samsung S‑series, Pixel 8, etc.).
 - **Software**: Android 10 (API 29) or higher.
 
-### Installation
-1. Clone this repository.
-2. Open in **Unity 6** (or 2022 LTS).
-3. Build the **Android App Bundle (AAB)** using the provided `RELEASE_CHECKLIST.md`.
-4. Connect your projector via USB-C and launch!
+Build steps (high‑level):
+
+1. Open the project in **Unity 6**.
+2. Switch Build Target to **Android**.
+3. Configure signing and store keys as needed.
+4. Build an **Android App Bundle (AAB)** following `RELEASE_CHECKLIST.md`.
+5. Install on a compatible phone, connect a USB‑C projector, and launch.
 
 ---
 

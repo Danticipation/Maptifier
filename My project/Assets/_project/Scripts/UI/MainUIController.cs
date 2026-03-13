@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Maptifier.Core;
+using Maptifier.Display;
 using Maptifier.Layers;
 using Maptifier.Media;
 using Maptifier.Projects;
@@ -60,8 +61,10 @@ namespace Maptifier.UI
 
         private VisualElement _projectOverlay;
         private ListView _projectList;
+        private TextField _projectNameField;
         private Button _projectCloseBtn;
         private Button _projectNewBtn;
+        private Button _projectSaveBtn;
         private Button _projectLoadBtn;
         private Button _projectDeleteBtn;
 
@@ -137,6 +140,7 @@ namespace Maptifier.UI
             CacheElements();
             WireAll();
             SubscribeToEvents();
+            SyncDisplayStatus();
         }
 
         private void CacheElements()
@@ -472,29 +476,33 @@ namespace Maptifier.UI
 
         private void LateUpdate()
         {
-            if (!_previewDirty || _canvasArea == null || _layerManager == null)
+            if (_canvasArea == null || _layerManager == null)
                 return;
 
-            // Render the current frame into the composite render texture
+            // Always render the current frame so time-based effects and video
+            // sources are visible in the editor preview.
             _layerManager.RenderFrame();
             var composite = _layerManager.CompositeOutput;
             if (composite == null)
                 return;
 
-            // Capture a snapshot from the composite RT into a Texture2D
-            var tex = new Texture2D(composite.width, composite.height, TextureFormat.RGBA32, false);
+            // Lazily create (or resize) a Texture2D that matches the composite RT.
+            if (_previewTexture == null ||
+                _previewTexture.width != composite.width ||
+                _previewTexture.height != composite.height)
+            {
+                if (_previewTexture != null)
+                    UnityEngine.Object.Destroy(_previewTexture);
+                _previewTexture = new Texture2D(composite.width, composite.height, TextureFormat.RGBA32, false);
+            }
+
             var prev = RenderTexture.active;
             RenderTexture.active = composite;
-            tex.ReadPixels(new Rect(0, 0, composite.width, composite.height), 0, 0);
-            tex.Apply();
+            _previewTexture.ReadPixels(new Rect(0, 0, composite.width, composite.height), 0, 0);
+            _previewTexture.Apply();
             RenderTexture.active = prev;
 
-            // Clean up previous preview texture
-            if (_previewTexture != null)
-                UnityEngine.Object.Destroy(_previewTexture);
-            _previewTexture = tex;
-
-            _canvasArea.style.backgroundImage = new StyleBackground(tex);
+            _canvasArea.style.backgroundImage = new StyleBackground(_previewTexture);
             _canvasArea.style.unityBackgroundImageTintColor = Color.white;
 
             _previewDirty = false;
@@ -564,6 +572,29 @@ namespace Maptifier.UI
             }
             if (_displayLabel != null)
                 _displayLabel.text = "No Display";
+        }
+
+        private void SyncDisplayStatus()
+        {
+            if (_displayStatus == null || _displayLabel == null)
+                return;
+
+            if (ServiceLocator.TryGet<IDisplayService>(out var display) && display != null && display.IsExternalDisplayConnected)
+            {
+                _displayStatus.RemoveFromClassList(DisconnectedClass);
+                _displayStatus.AddToClassList(ConnectedClass);
+                var res = display.ExternalResolution;
+                if (res.x > 0 && res.y > 0)
+                    _displayLabel.text = $"{res.x}×{res.y}";
+                else
+                    _displayLabel.text = "Display Connected";
+            }
+            else
+            {
+                _displayStatus.RemoveFromClassList(ConnectedClass);
+                _displayStatus.AddToClassList(DisconnectedClass);
+                _displayLabel.text = "No Display";
+            }
         }
 
         private void OnProjectAutoSaved(ProjectAutoSavedEvent evt)
@@ -687,6 +718,29 @@ namespace Maptifier.UI
 
             panel.Add(header);
 
+            // Name field row
+            var nameRow = new VisualElement();
+            nameRow.style.flexDirection = FlexDirection.Row;
+            nameRow.style.paddingLeft = 16;
+            nameRow.style.paddingRight = 16;
+            nameRow.style.paddingBottom = 8;
+
+            var nameLabel = new Label("Name");
+            nameLabel.AddToClassList("maptifier-label--secondary");
+            nameLabel.style.minWidth = 60;
+            nameLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
+            nameLabel.style.marginRight = 8;
+
+            _projectNameField = new TextField { name = "project-name-field" };
+            _projectNameField.isDelayed = true;
+            _projectNameField.style.flexGrow = 1;
+            // Use a USS class for sizing/visuals so we don't fight the default metrics.
+            _projectNameField.AddToClassList("maptifier-textfield");
+
+            nameRow.Add(nameLabel);
+            nameRow.Add(_projectNameField);
+            panel.Add(nameRow);
+
             _projectList = new ListView
             {
                 name = "project-list",
@@ -704,14 +758,17 @@ namespace Maptifier.UI
             footer.style.paddingBottom = 16;
 
             _projectNewBtn = new Button { text = "New", name = "project-new-btn" };
+            _projectSaveBtn = new Button { text = "Save", name = "project-save-btn" };
             _projectLoadBtn = new Button { text = "Load", name = "project-load-btn" };
             _projectDeleteBtn = new Button { text = "Delete", name = "project-delete-btn" };
 
             _projectNewBtn.AddToClassList("maptifier-button");
+            _projectSaveBtn.AddToClassList("maptifier-button");
             _projectLoadBtn.AddToClassList("maptifier-button");
             _projectDeleteBtn.AddToClassList("maptifier-button");
 
             footer.Add(_projectNewBtn);
+            footer.Add(_projectSaveBtn);
             footer.Add(_projectLoadBtn);
             footer.Add(_projectDeleteBtn);
 
@@ -722,6 +779,7 @@ namespace Maptifier.UI
 
             _projectCloseBtn.clicked += HideProjectOverlay;
             _projectNewBtn.clicked += OnProjectNewClicked;
+            _projectSaveBtn.clicked += OnProjectSaveClicked;
             _projectLoadBtn.clicked += OnProjectLoadClicked;
             _projectDeleteBtn.clicked += OnProjectDeleteClicked;
         }
@@ -771,14 +829,50 @@ namespace Maptifier.UI
                     label.text = string.IsNullOrEmpty(p.Name) ? p.Id : p.Name;
                 }
             };
+
+            // Sync name field to current project if possible
+            if (_projectNameField != null)
+            {
+                if (!string.IsNullOrEmpty(projectManager.CurrentProjectName))
+                    _projectNameField.value = projectManager.CurrentProjectName;
+                else
+                    _projectNameField.value = "Untitled";
+            }
         }
 
         private void OnProjectNewClicked()
         {
             var projectManager = GetOrCreateProjectManager();
-            projectManager.CreateNewProject("Untitled");
-            ShowToast("New project created.");
+            var name = _projectNameField != null && !string.IsNullOrWhiteSpace(_projectNameField.value)
+                ? _projectNameField.value
+                : "Untitled";
+            var data = projectManager.CreateNewProject(name);
+            _projectNameField.value = data.Name ?? name;
+            projectManager.EnableAutoSave(60f);
+            ShowToast($"New project \"{_projectNameField.value}\" created.");
             RefreshProjectList();
+        }
+
+        private void OnProjectSaveClicked()
+        {
+            var projectManager = GetOrCreateProjectManager();
+            var name = _projectNameField != null && !string.IsNullOrWhiteSpace(_projectNameField.value)
+                ? _projectNameField.value
+                : (projectManager.CurrentProjectName ?? "Untitled");
+
+            projectManager.SaveProject(name, success =>
+            {
+                if (success)
+                {
+                    ShowToast($"Project \"{name}\" saved.");
+                    projectManager.EnableAutoSave(60f);
+                    RefreshProjectList();
+                }
+                else
+                {
+                    ShowToast("Project save failed.");
+                }
+            });
         }
 
         private void OnProjectLoadClicked()
@@ -802,6 +896,9 @@ namespace Maptifier.UI
                 if (success)
                 {
                     ShowToast($"Loaded project \"{selected.Name}\".");
+                    if (_projectNameField != null)
+                        _projectNameField.value = string.IsNullOrEmpty(selected.Name) ? "Untitled" : selected.Name;
+                    projectManager.EnableAutoSave(60f);
                     HideProjectOverlay();
                 }
                 else
@@ -824,6 +921,13 @@ namespace Maptifier.UI
             projectManager.DeleteProject(selected.Id);
             ShowToast("Project deleted.");
             RefreshProjectList();
+
+            // Clear name field if we just deleted the current project
+            if (_projectNameField != null &&
+                string.Equals(selected.Id, projectManager.CurrentProjectId, System.StringComparison.OrdinalIgnoreCase))
+            {
+                _projectNameField.value = "Untitled";
+            }
         }
 
         private void SelectLayer(int index)

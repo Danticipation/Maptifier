@@ -516,6 +516,9 @@ namespace Maptifier.Projects
             var layers = new[] { layerManager.LayerA, layerManager.LayerB };
             foreach (var layer in layers)
             {
+                if (layer == null)
+                    continue;
+
                 var layerData = new LayerData
                 {
                     Id = layer.Id,

@@ -21,7 +21,15 @@ namespace Maptifier.Media
         public void ImportFromGallery(Action<IMediaSource> onComplete, Action<string> onError)
         {
 #if UNITY_EDITOR
-            var path = EditorUtility.OpenFilePanel("Select Image, Video, or Vector", "", "jpg;jpeg;png;gif;webp;svg;mp4;mov;webm;avi;mkv");
+            // Unity's OpenFilePanel only accepts a single extension string, so use
+            // OpenFilePanelWithFilters to allow both images and videos.
+            var filters = new[]
+            {
+                "Supported Media", "jpg,jpeg,png,gif,webp,svg,mp4,mov,webm,avi,mkv",
+                "Images",          "jpg,jpeg,png,gif,webp,svg",
+                "Video",           "mp4,mov,webm,avi,mkv"
+            };
+            var path = EditorUtility.OpenFilePanelWithFilters("Select Image, Video, or Vector", "", filters);
             if (string.IsNullOrEmpty(path))
             {
                 onError?.Invoke("No file selected.");
