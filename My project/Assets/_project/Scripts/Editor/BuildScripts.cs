@@ -8,7 +8,7 @@ namespace Maptifier.Editor
         {
             var buildPlayerOptions = new BuildPlayerOptions
             {
-                scenes = new[] { "Assets/_Project/Scenes/Boot.unity" },
+                scenes = new[] { "Assets/_project/Scenes/Boot.unity" },
                 locationPathName = "Builds/Android/Maptifier.aab",
                 target = BuildTarget.Android,
                 options = BuildOptions.CompressWithLz4HC

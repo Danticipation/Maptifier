@@ -91,7 +91,7 @@ namespace Maptifier.Core
 
         private void SendNearAnrAnalytics(float blockedSeconds, string stackTrace)
         {
-#if MAPTIFIER_ANALYTICS
+#if FIREBASE_ANALYTICS || MAPTIFIER_ANALYTICS
             try
             {
                 Firebase.Analytics.FirebaseAnalytics.LogEvent("near_anr", new Firebase.Analytics.Parameter("blocked_seconds", blockedSeconds));
