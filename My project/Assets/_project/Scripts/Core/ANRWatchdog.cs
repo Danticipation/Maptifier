@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Maptifier.Core
 {
@@ -17,6 +18,7 @@ namespace Maptifier.Core
         private const float TickIntervalSeconds = 1f;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
+        private static readonly Stopwatch _clock = Stopwatch.StartNew();
         private Thread _watchdogThread;
         private volatile bool _running = true;
         private long _lastResetMs;
@@ -25,7 +27,7 @@ namespace Maptifier.Core
         private void Awake()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
-            _lastResetMs = Environment.TickCount64;
+            _lastResetMs = _clock.ElapsedMilliseconds;
             _watchdogThread = new Thread(WatchdogLoop)
             {
                 IsBackground = true,
@@ -39,7 +41,7 @@ namespace Maptifier.Core
         private void Update()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
-            Interlocked.Exchange(ref _lastResetMs, Environment.TickCount64);
+            Interlocked.Exchange(ref _lastResetMs, _clock.ElapsedMilliseconds);
 #endif
         }
 
@@ -62,7 +64,7 @@ namespace Maptifier.Core
                 if (!_running) break;
 
                 var lastReset = Interlocked.Read(ref _lastResetMs);
-                var elapsed = (Environment.TickCount64 - lastReset) / 1000.0;
+                var elapsed = (_clock.ElapsedMilliseconds - lastReset) / 1000.0;
                 if (elapsed >= AnrThresholdSeconds)
                 {
                     var stackTrace = GetMainThreadStackTrace();
