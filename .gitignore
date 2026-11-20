@@ -49,6 +49,14 @@ sysinfo.txt
 *.aab
 *.unitypackage
 *.app
+*.exe
+*_Data/
+*_BurstDebugInformation_DoNotShip/
+MonoBleedingEdge/
+D3D12/
+DirectML.dll
+UnityPlayer.dll
+UnityCrashHandler64.exe
 
 # Crashlytics
 crashlytics-build.properties

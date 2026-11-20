@@ -29,8 +29,8 @@
 - One public class per file, filename matches class name.
 - Assembly definitions per module (`Maptifier.Core.asmdef`, `Maptifier.Display.asmdef`, etc.).
 - Keep `MonoBehaviour`s thin — delegate logic to plain C# service classes.
-- Shaders in `Assets/_Project/Shaders/{Category}/`.
-- UI layouts in `Assets/_Project/UI/UXML/`, styles in `Assets/_Project/UI/USS/`.
+- Shaders in `Assets/_project/Shaders/{Category}/`.
+- UI layouts in `Assets/_project/UI/UXML/`, styles in `Assets/_project/UI/USS/`.
 
 ## Performance Rules
 

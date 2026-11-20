@@ -66,7 +66,7 @@ namespace Maptifier.Core
 
         private void LogToCrashlytics(string message, string stackTrace)
         {
-#if MAPTIFIER_CRASHLYTICS
+#if FIREBASE_CRASHLYTICS || MAPTIFIER_CRASHLYTICS
             try
             {
                 Firebase.Crashlytics.Crashlytics.Log($"{message}\n{stackTrace}");

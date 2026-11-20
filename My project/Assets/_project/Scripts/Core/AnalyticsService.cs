@@ -24,7 +24,7 @@ namespace Maptifier.Core
         {
             if (!HasConsent) return;
 
-#if FIREBASE_ANALYTICS
+#if FIREBASE_ANALYTICS || MAPTIFIER_ANALYTICS
             try
             {
                 var @params = new Firebase.Analytics.Parameter[parameters.Length];

@@ -35,7 +35,7 @@ Unity is opened from **`My project`**, but the Maptifier C# scripts live in the 
 
 ## Why This Happens
 
-- The editor build script (`Assets/_Project/Scripts/Editor/BuildScripts.cs`) expects **`Assets/_Project/Scenes/Boot.unity`**.
+- The editor build script (`Assets/_project/Scripts/Editor/BuildScripts.cs`) expects **`Assets/_project/Scenes/Boot.unity`**.
 - That file does **not** exist in the project. The only scene present is **`My project/Assets/Scenes/SampleScene.unity`** (the default Unity template).
 - If you built via **File → Build Settings** without using the custom build script, Unity used whatever scene was in the list (e.g. SampleScene) → you get the default sky/ground and no Maptifier UI.
 
@@ -48,12 +48,12 @@ Do this in the **Unity Editor** (with the project opened from `C:\My Application
 ### Option A: Create the Boot scene (recommended)
 
 1. **Create the scene folder** (if it doesn’t exist):
-   - In the Project window, under **Assets**, create: **Assets/_Project/Scenes**.
-   - (If your project root is `My project`, the path may be **Assets/Scenes**; create **_Project/Scenes** under **Assets** if your Assets layout matches the script folder structure.)
+   - In the Project window, under **Assets**, create: **Assets/_project/Scenes**.
+   - (If your project root is `My project`, the path may be **Assets/Scenes**; create **_project/Scenes** under **Assets** if your Assets layout matches the script folder structure.)
 
 2. **Create a new scene:**
    - **File → New Scene** (or use the default Basic/Empty template).
-   - **File → Save As** and save it as **`Boot`** in **Assets/_Project/Scenes/** (e.g. `Assets/_Project/Scenes/Boot.unity`).
+   - **File → Save As** and save it as **`Boot`** in **Assets/_project/Scenes/** (e.g. `Assets/_project/Scenes/Boot.unity`).
 
 3. **Add the app entry point:**
    - In the Hierarchy, create an empty GameObject (right‑click → Create Empty). Name it e.g. **`App`** or **`Bootstrapper`**.
@@ -84,6 +84,6 @@ If you prefer to keep using the current scene (e.g. **SampleScene**):
 ## After the Fix
 
 - The first scene in **Build Settings** must be the one that has **AppBootstrapper** and the full Maptifier UI.
-- If you use the custom build script (**BuildScripts.BuildAndroidAab**), it will use **`Assets/_Project/Scenes/Boot.unity`**, so create and save the Boot scene at that path for the script to find it.
+- If you use the custom build script (**BuildScripts.BuildAndroidAab**), it will use **`Assets/_project/Scenes/Boot.unity`**, so create and save the Boot scene at that path for the script to find it.
 
 Once the correct scene is built and run, you should see the Maptifier interface instead of the empty sky/ground view.
