@@ -33,6 +33,14 @@ namespace Maptifier.Editor
             PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel29;
             PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevel34;
 
+            var androidAppId = PlayerSettings.GetApplicationIdentifier(NamedBuildTarget.Android);
+            if (IsForbiddenDefaultAndroidAppId(androidAppId))
+            {
+                var msg = $"Android application identifier '{androidAppId}' is still a Unity default. Set Player Settings > Android package name to a real ID (e.g. com.newsharpe.maptifier) before a release AAB build.";
+                Debug.LogError(msg);
+                throw new BuildFailedException(msg);
+            }
+
             // Build
             Directory.CreateDirectory(OutputFolder);
             string aabPath = Path.Combine(OutputFolder, $"Maptifier-{PlayerSettings.bundleVersion}.aab");
@@ -52,6 +60,25 @@ namespace Maptifier.Editor
                 Debug.Log($"AAB succeeded: {aabPath} ({summary.totalSize} bytes)");
             else
                 Debug.LogError($"AAB failed: {summary.result}");
+        }
+
+
+        private static bool IsForbiddenDefaultAndroidAppId(string appId)
+        {
+            if (string.IsNullOrWhiteSpace(appId))
+                return true;
+
+            var id = appId.Trim();
+            if (id.StartsWith("com.UnityTechnologies.", System.StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (id.StartsWith("com.DefaultCompany.", System.StringComparison.OrdinalIgnoreCase))
+                return true;
+            // Unity URP/3D template identifiers, including hyphenated variants
+            if (id.IndexOf("urpblank", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (id.IndexOf("urp-blank", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            return false;
         }
 
         [MenuItem("Maptifier/Build/Force Boot Scene Only")]
