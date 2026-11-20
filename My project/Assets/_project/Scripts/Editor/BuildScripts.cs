@@ -8,7 +8,7 @@ namespace Maptifier.Editor
 {
     public static class BuildScripts
     {
-        private const string BootScenePath = "Assets/_project/Scenes/Boot.unity";
+        private const string BootScenePath = "Assets/_project/Scenes/MAPTIFIER-SCENE.unity";
         private const string OutputFolder  = "Builds/Android";
 
         [MenuItem("Maptifier/Build/Android AAB (Release)")]
