@@ -64,7 +64,7 @@ namespace Maptifier.Core
                 if (!_running) break;
 
                 var lastReset = Interlocked.Read(ref _lastResetMs);
-                var elapsed = (_clock.ElapsedMilliseconds - lastReset) / 1000.0;
+                var elapsed = (_clock.ElapsedMilliseconds - lastReset) / 1000f;
                 if (elapsed >= AnrThresholdSeconds)
                 {
                     var stackTrace = GetMainThreadStackTrace();
