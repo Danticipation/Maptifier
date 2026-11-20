@@ -69,7 +69,11 @@ public class MaptifierEncoder {
 
     private void drainEncoder(boolean endOfStream) {
         if (endOfStream) {
-            mEncoder.signalEndOfStream();
+            int index = mEncoder.dequeueInputBuffer(10000);
+            if (index >= 0) {
+                long presentationTimeUs = 0;
+                mEncoder.queueInputBuffer(index, 0, 0, presentationTimeUs, MediaCodec.BUFFER_FLAG_END_OF_STREAM);
+            }
         }
 
         while (true) {
