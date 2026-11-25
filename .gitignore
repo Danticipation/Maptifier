@@ -95,3 +95,18 @@ keystore.properties
 
 # Windows reserved names
 nul
+
+# Explicit log path (some logs were committed before ignore rules)
+My project/Logs/
+
+# Unity 6 / Android local build artifacts
+.utmp/
+*_BackUpThisFolder_ButDontShipItWithYourGame/
+*.symbols.zip
+
+# Accidental nested project copy
+My project/My project/
+
+# Local duplicate checkouts (if recreated)
+/Maptifier/
+/Maptifier V1.2/
